@@ -12,16 +12,6 @@ locals {
   }
 }
 
-module "ec2_instance_module" {
-  source                     = "./module/ec2_instance_module"
-  ami                        = "ami-0a3c3a20c09d6f377" # ami: aws linux machine
-  instance_type              = "t2.micro"
-  instance_name              = var.ec2_instance_name
-  ssh_allowed_ip             = var.ssh_allowed_ip
-  ec2_instance_pem_file_name = var.ec2_instance_pem_file_name
-  tags                       = local.common_tags
-}
-
 module "parameter_store_module" {
   source               = "./module/parameter_store_module"
   parameter_store_name = var.parameter_store_name
@@ -34,6 +24,26 @@ module "cloudwatch_logs_module" {
   cloudwatch_log_stream_name = var.cloudwatch_log_stream_name
   tags                       = local.common_tags
 }
+
+module "load_balancer_module" {
+  source                     = "./module/load_balancer_module"
+  VPC_Subnets_ids            = var.VPC_Subnets_ids
+  VPC_ID                     = var.VPC_ID
+  tags                       = local.common_tags
+  elb_public_name            = var.elb_public_name
+}
+
+
+module "ec2_instance_module" {
+  source                     = "./module/ec2_instance_module"
+  ami                        = var.ec2_instance_ami # ami: aws linux machine
+  instance_type              = var.ec2_instance_type
+  instance_name              = var.ec2_instance_name
+  ssh_allowed_ip             = var.ssh_allowed_ip
+  ec2_instance_pem_file_name = var.ec2_instance_pem_file_name
+  tags                       = local.common_tags
+}
+
 
 module "code_pipeline_module" {
   source                   = "./module/code_pipeline_module"
@@ -57,6 +67,19 @@ module "code_pipeline_module" {
 output "parameter_store_name" {
   value = module.parameter_store_module.parameter_store_name
 }
+
+output "cloudwatch_logs_group_name" {
+  value = module.cloudwatch_logs_module.cloudwatch_group_name
+}
+
+output "cloudwatch_stream_name" {
+  value = module.cloudwatch_logs_module.cloudwatch_stream_name
+}
+
+output "load_balancer_dns" {
+  value = module.load_balancer_module.load_balancer_url
+}
+
 
 output "module_ec2_instance_details" {
   value = module.ec2_instance_module.instance_details
