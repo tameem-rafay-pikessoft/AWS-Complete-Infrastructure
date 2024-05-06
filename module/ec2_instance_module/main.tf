@@ -45,7 +45,7 @@ resource "aws_iam_instance_profile" "EC2_instance_profile" {
 resource "aws_instance" "ec2_instance" {
   ami                    = var.ami
   instance_type          = var.instance_type
-  user_data              = file("${path.module}/EC2_user_data.sh")
+  user_data              = file("${path.module}/../../Utils/EC2_user_data.sh")
   iam_instance_profile   = aws_iam_instance_profile.EC2_instance_profile.name
   vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
   key_name               = aws_key_pair.ec2_key_pair.key_name #
@@ -83,12 +83,12 @@ resource "aws_security_group" "ec2_security_group" {
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"  # All protocols
-    cidr_blocks     = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1" # All protocols
+    cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = var.tags
 }
 

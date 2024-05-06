@@ -26,11 +26,11 @@ module "cloudwatch_logs_module" {
 }
 
 module "load_balancer_module" {
-  source                     = "./module/load_balancer_module"
-  VPC_Subnets_ids            = var.VPC_Subnets_ids
-  VPC_ID                     = var.VPC_ID
-  tags                       = local.common_tags
-  elb_public_name            = var.elb_public_name
+  source          = "./module/load_balancer_module"
+  VPC_Subnets_ids = var.VPC_Subnets_ids
+  VPC_ID          = var.VPC_ID
+  tags            = local.common_tags
+  elb_public_name = var.elb_public_name
 }
 
 
@@ -44,6 +44,15 @@ module "ec2_instance_module" {
   tags                       = local.common_tags
 }
 
+module "ec2_auto_scaling_module" {
+  source                = "./module/auto_scaling_group_module"
+  instance_type         = var.ec2_instance_type
+  ami                   = var.ec2_instance_ami
+  VPC_Subnets_ids       = var.VPC_Subnets_ids
+  elb_security_group_id = module.load_balancer_module.elb_security_group_id
+  VPC_ID                = var.VPC_ID
+  tags                       = local.common_tags  
+}
 
 module "code_pipeline_module" {
   source                   = "./module/code_pipeline_module"

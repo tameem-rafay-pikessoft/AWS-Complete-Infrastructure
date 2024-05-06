@@ -122,6 +122,7 @@ variable "s3BucketNameForArtifacts" {
   }
 }
 
+# https://us-east-1.console.aws.amazon.com/codesuite/codestar/project/new?region=us-east-1
 variable "CodeStarConnectionArn" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"
@@ -155,7 +156,7 @@ variable "elb_public_name" {
   description = "Public name of ELB"
   default     = "my-test-elb"
   validation {
-      condition     = can(regex("^([a-zA-Z0-9-]+)$", var.elb_public_name))
-      error_message = "Invalid ELB public name. Only alphanumeric characters and hyphens are allowed."
-    }
+    condition     = can(regex("^([a-zA-Z0-9-]+)$", var.elb_public_name))
+    error_message = "Invalid ELB public name. Only alphanumeric characters and hyphens are allowed."
+  }
 }
