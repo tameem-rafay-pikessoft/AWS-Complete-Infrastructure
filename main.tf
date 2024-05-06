@@ -25,6 +25,13 @@ module "cloudwatch_logs_module" {
   tags                       = local.common_tags
 }
 
+module "aws_max_monthly_budget" {
+  source                                      = "./module/aws_account_monthly_budget_module"
+  monthly_budget_notification_email_addresses = var.monthly_budget_notification_email_addresses
+  max_account_monthly_budget                  = var.max_account_monthly_budget
+  tags                                        = local.common_tags
+}
+
 module "load_balancer_module" {
   source          = "./module/load_balancer_module"
   VPC_Subnets_ids = var.VPC_Subnets_ids
@@ -51,7 +58,7 @@ module "ec2_auto_scaling_module" {
   VPC_Subnets_ids       = var.VPC_Subnets_ids
   elb_security_group_id = module.load_balancer_module.elb_security_group_id
   VPC_ID                = var.VPC_ID
-  tags                       = local.common_tags  
+  tags                  = local.common_tags
 }
 
 module "code_pipeline_module" {

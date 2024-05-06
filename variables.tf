@@ -160,3 +160,19 @@ variable "elb_public_name" {
     error_message = "Invalid ELB public name. Only alphanumeric characters and hyphens are allowed."
   }
 }
+
+# ----------------------------------------------------------------
+# ----------------------- AWS MONTHLY BUDGET ---------------------
+# ----------------------------------------------------------------
+
+variable "monthly_budget_notification_email_addresses" {
+  description = "List of email addresses for budget notifications"
+  type        = list(string)
+  default     = ["tameem.rafay@pikessoft.com"]
+}
+
+variable "max_account_monthly_budget" {
+  description = "Maximum monthly budget for the account"
+  type        = number
+  default     = 30
+}
