@@ -28,6 +28,11 @@ variable "BranchName" {
   description = "Select branch from repository "
 }
 
+variable "codePipeline_notification_email_addresses" {
+  description = "List of email addresses for code pipeline notifications"
+  type        = list(string)
+}
+
 variable "CodeStarConnectionArn" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"

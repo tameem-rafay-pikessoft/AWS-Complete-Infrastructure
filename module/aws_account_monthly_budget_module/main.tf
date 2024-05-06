@@ -13,18 +13,18 @@ resource "aws_sns_topic_subscription" "email_subscription" {
 }
 
 resource "aws_budgets_budget" "budget_notification" {
-  name              = "month_budget_notification"
-  limit_amount      = var.max_account_monthly_budget
-  limit_unit        = "USD"
-  budget_type       = "COST"
-  time_unit         = "MONTHLY"
+  name         = "month_budget_notification"
+  limit_amount = var.max_account_monthly_budget
+  limit_unit   = "USD"
+  budget_type  = "COST"
+  time_unit    = "MONTHLY"
 
   notification {
-    comparison_operator = "GREATER_THAN"
-    threshold           = var.max_account_monthly_budget
-    threshold_type      = "PERCENTAGE"
-    notification_type   = "ACTUAL"
+    comparison_operator        = "GREATER_THAN"
+    threshold                  = var.max_account_monthly_budget
+    threshold_type             = "PERCENTAGE"
+    notification_type          = "ACTUAL"
     subscriber_email_addresses = var.monthly_budget_notification_email_addresses
-    subscriber_sns_topic_arns = [aws_sns_topic.budget_notification_topic.arn]
+    subscriber_sns_topic_arns  = [aws_sns_topic.budget_notification_topic.arn]
   }
 }

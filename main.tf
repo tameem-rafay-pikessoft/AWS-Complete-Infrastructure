@@ -62,14 +62,15 @@ module "ec2_auto_scaling_module" {
 }
 
 module "code_pipeline_module" {
-  source                   = "./module/code_pipeline_module"
-  AWSCodePipeLineName      = var.AWSCodePipeLineName
-  instance_name            = module.ec2_instance_module.instance_details.instance_name
-  FullRepositoryId         = var.FullRepositoryId
-  BranchName               = var.BranchName
-  CodeStarConnectionArn    = var.CodeStarConnectionArn
-  s3BucketNameForArtifacts = var.s3BucketNameForArtifacts
-  tags                     = local.common_tags
+  source                                    = "./module/code_pipeline_module"
+  AWSCodePipeLineName                       = var.AWSCodePipeLineName
+  instance_name                             = module.ec2_instance_module.instance_details.instance_name
+  FullRepositoryId                          = var.FullRepositoryId
+  BranchName                                = var.BranchName
+  CodeStarConnectionArn                     = var.CodeStarConnectionArn
+  s3BucketNameForArtifacts                  = var.s3BucketNameForArtifacts
+  codePipeline_notification_email_addresses = var.codePipeline_notification_email_addresses
+  tags                                      = local.common_tags
 }
 
 

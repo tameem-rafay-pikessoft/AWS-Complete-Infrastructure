@@ -136,7 +136,7 @@ resource "aws_s3_bucket" "store_pipeline_artifacts_bucket" {
 }
 
 # Create CodePipeline
-resource "aws_codepipeline" "example_pipeline" {
+resource "aws_codepipeline" "code_pipeline" {
   name     = var.AWSCodePipeLineName
   role_arn = aws_iam_role.codepipeline_role.arn
   tags     = var.tags
@@ -183,4 +183,30 @@ resource "aws_codepipeline" "example_pipeline" {
       }
     }
   }
+}
+
+resource "aws_codestarnotifications_notification_rule" "codepipeline_notifications" {
+  detail_type    = "FULL"
+  event_type_ids = ["codepipeline-pipeline-pipeline-execution-failed", "codepipeline-pipeline-pipeline-execution-succeeded", "codepipeline-pipeline-pipeline-execution-started"]
+  name           = "codepipeline-notifications"
+  resource       = aws_codepipeline.code_pipeline.arn
+  status         = "ENABLED"
+
+  target {
+    address = aws_sns_topic.codepipeline_notifications.arn
+  }
+}
+
+
+# Create SNS topic
+resource "aws_sns_topic" "codepipeline_notifications" {
+  name = "codepipeline-notifications"
+}
+
+# Subscribe email to SNS topic
+resource "aws_sns_topic_subscription" "email_subscription" {
+  for_each  = toset(var.codePipeline_notification_email_addresses)
+  topic_arn = aws_sns_topic.codepipeline_notifications.arn
+  protocol  = "email"
+  endpoint  = each.value
 }

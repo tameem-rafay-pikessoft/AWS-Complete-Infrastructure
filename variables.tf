@@ -94,6 +94,12 @@ variable "cloudwatch_log_stream_name" {
 # --------------- AWS CodePipeline VARIABLES ---------------------
 # ----------------------------------------------------------------
 
+variable "codePipeline_notification_email_addresses" {
+  description = "List of email addresses for budget notifications"
+  type        = list(string)
+  default     = ["tameem.rafay@pikessoft.com"]
+}
+
 variable "FullRepositoryId" {
   type        = string
   description = "Repository used in code pipeline"
