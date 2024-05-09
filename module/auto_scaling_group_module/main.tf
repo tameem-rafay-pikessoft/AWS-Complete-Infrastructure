@@ -3,12 +3,13 @@ resource "aws_autoscaling_group" "ec2_asg" {
   launch_configuration = aws_launch_configuration.alb_launch_configuration.id
   min_size             = 1
   max_size             = 1
-  desired_capacity     = 1
+  desired_capacity     = 0
   vpc_zone_identifier  = var.VPC_Subnets_ids
   target_group_arns = [
     aws_lb_target_group.lb_target_group.arn # Reference the ARN of the target group
   ]
 }
+
 
 
 resource "aws_lb_target_group" "lb_target_group" {

@@ -36,6 +36,27 @@ variable "account_id" {
   type    = string
   default = "905418404338"
 }
+# ----------------------------------------------------------------
+# -------------------------- Auto Scaling Group ------------------
+# ----------------------------------------------------------------
+
+variable "min_size" {
+  description = "Minimum size of the Auto Scaling group"
+  type        = number
+  default     = 1
+}
+
+variable "max_size" {
+  description = "Maximum size of the Auto Scaling group"
+  type        = number
+  default     = 1
+}
+
+variable "desired_capacity" {
+  description = "Desired number of instances in the Auto Scaling group"
+  type        = number
+  default     = 0
+}
 
 # ----------------------------------------------------------------
 # --------------- EC2 VARIABLES ------------------

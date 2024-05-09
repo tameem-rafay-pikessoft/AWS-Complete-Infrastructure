@@ -2,6 +2,26 @@ variable "ami" {
   description = "AMI ID for the EC2 instance"
 }
 
+variable "min_size" {
+  description = "Minimum size of the Auto Scaling group"
+  type        = number
+  default     = 1
+}
+
+variable "max_size" {
+  description = "Maximum size of the Auto Scaling group"
+  type        = number
+  default     = 1
+}
+
+variable "desired_capacity" {
+  description = "Desired number of instances in the Auto Scaling group"
+  type        = number
+  default     = 1
+}
+
+
+
 variable "instance_type" {
   type        = string
   description = "Instance type for the EC2 instance"

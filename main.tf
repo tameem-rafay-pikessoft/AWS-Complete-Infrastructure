@@ -40,14 +40,19 @@ module "load_balancer_module" {
   elb_public_name = var.elb_public_name
 }
 
+module "ec2_security_group_module" {
+  source          = "./module/security_group_module"
+  ssh_allowed_ip = var.ssh_allowed_ip
+}
+
 
 module "ec2_instance_module" {
   source                     = "./module/ec2_instance_module"
   ami                        = var.ec2_instance_ami # ami: aws linux machine
   instance_type              = var.ec2_instance_type
   instance_name              = var.ec2_instance_name
-  ssh_allowed_ip             = var.ssh_allowed_ip
   ec2_instance_pem_file_name = var.ec2_instance_pem_file_name
+  ec2_security_group_id      = module.ec2_security_group_module.security_group_id
   tags                       = local.common_tags
 }
 
@@ -57,6 +62,7 @@ module "ec2_auto_scaling_module" {
   ami                   = var.ec2_instance_ami
   VPC_Subnets_ids       = var.VPC_Subnets_ids
   elb_security_group_id = module.load_balancer_module.elb_security_group_id
+  ec2_security_group_id = module.ec2_security_group_module.security_group_id
   VPC_ID                = var.VPC_ID
   tags                  = local.common_tags
 }
@@ -93,9 +99,9 @@ output "cloudwatch_stream_name" {
   value = module.cloudwatch_logs_module.cloudwatch_stream_name
 }
 
-output "load_balancer_dns" {
-  value = module.load_balancer_module.load_balancer_url
-}
+# output "load_balancer_dns" {
+#   value = module.load_balancer_module.load_balancer_url
+# }
 
 
 output "module_ec2_instance_details" {
