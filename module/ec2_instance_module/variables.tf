@@ -21,10 +21,10 @@ variable "ec2_role_permissions" {
   ]
 }
 
-# variable "ec2_security_group_id" {
-#   description = "Security group ID to attach to the EC2"
-#   type        = string
-# }
+variable "ec2_security_group_id" {
+  description = "Security group ID to attach to the EC2"
+  type        = string
+}
 
 variable "instance_name" {
   description = "Name of the instance so that we can use this instance in deployment group in code pipeline"

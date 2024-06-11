@@ -47,7 +47,7 @@ resource "aws_instance" "ec2_instance" {
   instance_type          = var.instance_type
   user_data              = file("${path.module}/../../Utils/EC2_user_data.sh")
   iam_instance_profile   = aws_iam_instance_profile.EC2_instance_profile.name
-  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
+  vpc_security_group_ids = [var.ec2_security_group_id]
   key_name               = aws_key_pair.ec2_key_pair.key_name #
   tags = merge(var.tags, {
     Name = var.instance_name
@@ -59,36 +59,3 @@ resource "aws_eip" "aws_instance_elastic_ip" {
   instance = aws_instance.ec2_instance.id
   tags     = var.tags
 }
-
-#EC2 security group
-resource "aws_security_group" "ec2_security_group" {
-  name        = "ec2-security-group"
-  description = "Security group attached with EC2"
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.ssh_allowed_ip]
-  }
-
-  dynamic "ingress" {
-    for_each = var.security_group_allowed_ports
-    content {
-      from_port   = ingress.value
-      to_port     = ingress.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1" # All protocols
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = var.tags
-}
-

@@ -5,23 +5,24 @@ variable "ami" {
 variable "min_size" {
   description = "Minimum size of the Auto Scaling group"
   type        = number
-  default     = 1
 }
 
 variable "max_size" {
   description = "Maximum size of the Auto Scaling group"
   type        = number
-  default     = 1
 }
 
 variable "desired_capacity" {
   description = "Desired number of instances in the Auto Scaling group"
   type        = number
-  default     = 1
 }
 
 
 
+variable "ec2_key_pair_name" {
+  type        = string
+  description = "EC2 key pair name (.pem file name) "
+}
 variable "instance_type" {
   type        = string
   description = "Instance type for the EC2 instance"
@@ -30,6 +31,11 @@ variable "instance_type" {
 variable "elb_security_group_id" {
   type        = string
   description = "Security Group that is attached with EC2 instance"
+}
+
+variable "ec2_security_group_id" {
+  description = "Security group ID to attach to the EC2"
+  type        = string
 }
 
 variable "VPC_Subnets_ids" {

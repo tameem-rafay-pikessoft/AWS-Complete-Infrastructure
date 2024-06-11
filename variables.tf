@@ -52,10 +52,11 @@ variable "max_size" {
   default     = 1
 }
 
+# NOTE: desired_capacity can not be less then min capacity
 variable "desired_capacity" {
   description = "Desired number of instances in the Auto Scaling group"
   type        = number
-  default     = 0
+  default     = 1
 }
 
 # ----------------------------------------------------------------
