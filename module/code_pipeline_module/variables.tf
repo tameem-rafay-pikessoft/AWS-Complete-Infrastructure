@@ -37,3 +37,12 @@ variable "CodeStarConnectionArn" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"
 }
+
+variable "CodeBuildPolicies" {
+  default = [
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
+    "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+  ]
+}

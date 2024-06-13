@@ -168,6 +168,24 @@ resource "aws_codepipeline" "code_pipeline" {
   }
 
   stage {
+  name = "Build"
+  action {
+    name             = "Build"
+    category         = "Build"
+    owner            = "AWS"
+    provider         = "CodeBuild"
+    version          = "1"
+    input_artifacts  = ["SourceArtifact"]
+    output_artifacts = ["BuildArtifact"]
+
+    configuration = {
+      ProjectName = aws_codebuild_project.code_build.name
+    }
+  }
+}
+
+
+  stage {
     name = "Deploy"
 
     action {
@@ -197,6 +215,66 @@ resource "aws_codestarnotifications_notification_rule" "codepipeline_notificatio
   }
 }
 
+# ------------------------------------------------------------
+# -------------- BUILD STAGE CONFIGURATIONS ------------
+# ------------------------------------------------------------
+
+resource "aws_iam_role" "codebuild_role" {
+  name = "codebuild_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "codebuild.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+
+resource "aws_iam_role_policy_attachment" "policy_attachments" {
+  for_each   = toset(var.CodeBuildPolicies)
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = each.value
+}
+
+resource "aws_codebuild_project" "code_build" {
+  name          = "code-build-project"
+  description   = "CodeBuild project"
+  service_role  = aws_iam_role.codebuild_role.arn
+  build_timeout = "10"  
+  source {
+    type = "CODEPIPELINE"
+    buildspec = "buildspec.yml"
+  }
+  artifacts {
+    type = "CODEPIPELINE"
+  }
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+  }
+  # send the logs of code build to cloudwatch
+  logs_config {
+    cloudwatch_logs {
+      group_name  = format("aws/codebuild/%s", var.AWSCodePipeLineName)
+      stream_name  = format("aws/codebuild/%s", var.AWSCodePipeLineName)
+    }
+  }
+}
+
+
+
+
+# ------------------------------------------------------------
+# -------------- BUILD STAGE CONFIGURATIONS ------------
+# ------------------------------------------------------------
 
 # Create SNS topic
 resource "aws_sns_topic" "codepipeline_notifications" {
