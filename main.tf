@@ -34,6 +34,12 @@ module "aws_max_monthly_budget" {
   tags                                        = local.common_tags
 }
 
+module "aws_cloudwatch_resource_monitoring_alerts" {
+  source                                      = "./module/cloud_watch_alerts"
+  cloudwatch_alerts_email_addresses           = var.developers_notification_email_addresses
+  tags                                        = local.common_tags
+}
+
 # module "load_balancer_module" {
 #   source          = "./module/load_balancer_module"
 #   VPC_Subnets_ids = var.VPC_Subnets_ids
@@ -88,7 +94,7 @@ module "ec2_auto_scaling_module" {
 #   BranchName                                = var.BranchName
 #   CodeStarConnectionArn                     = var.CodeStarConnectionArn
 #   s3BucketNameForArtifacts                  = var.s3BucketNameForArtifacts
-#   codePipeline_notification_email_addresses = var.codePipeline_notification_email_addresses
+#   codePipeline_notification_email_addresses = var.developers_notification_email_addresses
 #   tags                                      = local.common_tags
 # }
 

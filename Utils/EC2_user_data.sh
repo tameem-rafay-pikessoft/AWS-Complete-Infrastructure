@@ -50,44 +50,44 @@ node server.js
 # So, that we can add the cloudwatch alarm based on that matrices
 
 # Install the CloudWatch agent
-# wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
-# sudo rpm -U ./amazon-cloudwatch-agent.rpm
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+sudo rpm -U ./amazon-cloudwatch-agent.rpm
 
 
 # Create the CloudWatch agent configuration file
-# cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
-# {
-#     "agent": {
-#         "metrics_collection_interval": 300,
-#         "run_as_user": "root"
-#     },
-#     "metrics": {
-#         "append_dimensions": {
-#             "InstanceId": "instance_matrices"
-#         },
-#         "metrics_collected": {
-#             "mem": {
-#                 "measurement": [
-#                     "mem_used_percent"
-#                 ],
-#                 "metrics_collection_interval": 60,
-#                 "resources": [
-#                     "*"
-#                 ]
-#             },
-#             "disk": {
-#                 "measurement": [
-#                     "used_percent"
-#                 ],
-#                 "metrics_collection_interval": 300,
-#                 "resources": [
-#                     "*"
-#                 ]
-#             }
-#         }
-#     }
-# }
-# EOF
+cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+{
+    "agent": {
+        "metrics_collection_interval": 300,
+        "run_as_user": "root"
+    },
+    "metrics": {
+        "append_dimensions": {
+            "InstanceId": "instance_matrices"
+        },
+        "metrics_collected": {
+            "mem": {
+                "measurement": [
+                    "mem_used_percent"
+                ],
+                "metrics_collection_interval": 60,
+                "resources": [
+                    "*"
+                ]
+            },
+            "disk": {
+                "measurement": [
+                    "disk_used_percent"
+                ],
+                "metrics_collection_interval": 300,
+                "resources": [
+                    "*"
+                ]
+            }
+        }
+    }
+}
+EOF
 
-# # Start the CloudWatch agent
-# sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+# Start the CloudWatch agent
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json

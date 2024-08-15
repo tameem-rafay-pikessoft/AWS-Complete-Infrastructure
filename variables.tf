@@ -121,8 +121,8 @@ variable "cloudwatch_log_stream_name" {
 # --------------- AWS CodePipeline VARIABLES ---------------------
 # ----------------------------------------------------------------
 
-variable "codePipeline_notification_email_addresses" {
-  description = "List of email addresses for budget notifications"
+variable "developers_notification_email_addresses" {
+  description = "List of email addresses for notifications"
   type        = list(string)
   default     = ["tameem.rafay@pikessoft.com"]
 }
