@@ -12,8 +12,8 @@ resource "null_resource" "example" {
   # DISCLAMIAR: once the resources are created you can not initialized more variables here.
   triggers = {
     parameter_name = aws_ssm_parameter.secure_parameter.name
-    aws_region     = "us-east-1" #var.aws_region
-    aws_profile    = "test-aws-terraform-Infrastructure" #var.aws_profile
+    aws_region     = var.aws_region  #var.aws_region
+    aws_profile    = var.aws_profile #var.aws_profile
   }
 
   provisioner "local-exec" {

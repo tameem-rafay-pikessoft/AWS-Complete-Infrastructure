@@ -48,7 +48,7 @@ resource "aws_instance" "ec2_instance" {
   user_data              = file("${path.module}/../../Utils/EC2_user_data.sh")
   iam_instance_profile   = aws_iam_instance_profile.EC2_instance_profile.name
   vpc_security_group_ids = [var.ec2_security_group_id]
-  key_name               = var.ec2_key_pair_name 
+  key_name               = var.ec2_key_pair_name
   tags = merge(var.tags, {
     Name = var.instance_name
   })

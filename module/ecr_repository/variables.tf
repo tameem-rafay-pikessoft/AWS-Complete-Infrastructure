@@ -1,6 +1,6 @@
 variable "ecr_repository_name" {
   type        = string
-  description = "ECR Repository Name for storing the docker images" 
+  description = "ECR Repository Name for storing the docker images"
 }
 
 

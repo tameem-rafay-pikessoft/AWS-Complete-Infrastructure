@@ -168,21 +168,21 @@ resource "aws_codepipeline" "code_pipeline" {
   }
 
   stage {
-  name = "Build"
-  action {
-    name             = "Build"
-    category         = "Build"
-    owner            = "AWS"
-    provider         = "CodeBuild"
-    version          = "1"
-    input_artifacts  = ["SourceArtifact"]
-    output_artifacts = ["BuildArtifact"]
+    name = "Build"
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["SourceArtifact"]
+      output_artifacts = ["BuildArtifact"]
 
-    configuration = {
-      ProjectName = aws_codebuild_project.code_build.name
+      configuration = {
+        ProjectName = aws_codebuild_project.code_build.name
+      }
     }
   }
-}
 
 
   stage {
@@ -245,9 +245,9 @@ resource "aws_codebuild_project" "code_build" {
   name          = "code-build-project"
   description   = "CodeBuild project"
   service_role  = aws_iam_role.codebuild_role.arn
-  build_timeout = "10"  
+  build_timeout = "10"
   source {
-    type = "CODEPIPELINE"
+    type      = "CODEPIPELINE"
     buildspec = "buildspec.yml"
   }
   artifacts {
@@ -267,7 +267,7 @@ resource "aws_codebuild_project" "code_build" {
   logs_config {
     cloudwatch_logs {
       group_name  = format("aws/codebuild/%s", var.AWSCodePipeLineName)
-      stream_name  = format("aws/codebuild/%s", var.AWSCodePipeLineName)
+      stream_name = format("aws/codebuild/%s", var.AWSCodePipeLineName)
     }
   }
 }
