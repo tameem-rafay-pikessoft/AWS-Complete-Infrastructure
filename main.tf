@@ -35,9 +35,9 @@ module "aws_max_monthly_budget" {
 }
 
 module "aws_cloudwatch_resource_monitoring_alerts" {
-  source                                      = "./module/cloud_watch_alerts"
-  cloudwatch_alerts_email_addresses           = var.developers_notification_email_addresses
-  tags                                        = local.common_tags
+  source                            = "./module/cloud_watch_alerts"
+  cloudwatch_alerts_email_addresses = var.developers_notification_email_addresses
+  tags                              = local.common_tags
 }
 
 # module "load_balancer_module" {
@@ -72,10 +72,10 @@ module "aws_key_pair_module" {
 # }
 
 module "ec2_auto_scaling_module" {
-  source                = "./module/auto_scaling_group_module"
-  instance_type         = var.ec2_instance_type
-  ami                   = var.ec2_instance_ami
-  VPC_Subnets_ids       = var.VPC_Subnets_ids
+  source          = "./module/auto_scaling_group_module"
+  instance_type   = var.ec2_instance_type
+  ami             = var.ec2_instance_ami
+  VPC_Subnets_ids = var.VPC_Subnets_ids
   # elb_security_group_id = module.load_balancer_module.elb_security_group_id
   ec2_security_group_id = module.ec2_security_group_module.security_group_id
   ec2_key_pair_name     = module.aws_key_pair_module.ec2_key_pair_name
