@@ -16,7 +16,7 @@ variable "aws_profile" {
 
 variable "ssh_allowed_ip" {
   type    = string
-  default = "103.48.1.30/32"
+  default = "39.44.28.92/32"
 }
 
 

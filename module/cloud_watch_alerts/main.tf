@@ -10,6 +10,35 @@ resource "aws_sns_topic_subscription" "email_subscription" {
   endpoint  = each.value
 }
 
+# This code is creating an IAM role that can be assumed by the CloudWatch service and attaching a policy
+# to that role which allows full access to CloudWatch Alarms. 
+# This would typically be used to allow CloudWatch to perform actions on your behalf, 
+# such as publishing notifications to an SNS topic when an alarm is triggered.
+resource "aws_iam_role" "cloudwatch" {
+  name = "cloudwatch"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "cloudwatch.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch" {
+  role       = aws_iam_role.cloudwatch.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+}
+
 resource "aws_cloudwatch_metric_alarm" "ram_usage_alarm" {
   alarm_name                = "High_RAM_Usage_Alarm"
   comparison_operator       = "GreaterThanThreshold"

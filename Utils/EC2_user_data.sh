@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Install the CodeDeploy agent
-sudo yum update -y
+# Install the CodeDeploy agent for pipeline
+sudo su
+yum update -y
 yum install -y ruby
 wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install
 chmod +x ./install
@@ -24,38 +25,18 @@ chmod +x /usr/local/bin/docker-compose
 docker volume create caddy_data
 
 
-# This would install the dummy project so that we can access the project. 
-# It is just for testing purposes
 
 
-sudo yum install -y nodejs npm
-# Create a simple Node.js server file
-cat <<EOF > server.js
-const http = require('http');
-
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello from your EC2 instance!');
-});
-
-server.listen(3000, '0.0.0.0', () => {
-  console.log('Server running at http://0.0.0.0:3000/');
-});
-EOF
-
-node server.js
-
-
-# Install the CLOUD_WATCH agent and send the required matrices to the cloudwatch 
+#-- Install the CLOUD_WATCH agent and send the required matrices to the cloudwatch 
 # So, that we can add the cloudwatch alarm based on that matrices
 
 # Install the CloudWatch agent
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
-sudo rpm -U ./amazon-cloudwatch-agent.rpm
+rpm -U ./amazon-cloudwatch-agent.rpm
 
 
 # Create the CloudWatch agent configuration file
-cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+sudo bash -c 'cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 {
     "agent": {
         "metrics_collection_interval": 300,
@@ -63,7 +44,7 @@ cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
     },
     "metrics": {
         "append_dimensions": {
-            "InstanceId": "instance_matrices"
+            "InstanceId": "${aws:InstanceId}"
         },
         "metrics_collected": {
             "mem": {
@@ -87,7 +68,41 @@ cat <<EOF > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
         }
     }
 }
-EOF
+EOF'
 
 # Start the CloudWatch agent
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+
+# to check the status of agent
+# sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
+# sudo journalctl -u amazon-cloudwatch-agent.service
+# sudo systemctl restart amazon-cloudwatch-agent.service
+
+
+
+
+
+
+# ----------------- REMOVE IT -----------------------------------------
+# This would install the dummy project so that we can access the project. 
+# It is just for testing purposes you can remove it
+
+
+yum install -y nodejs npm
+# Create a simple Node.js server file
+cat <<EOF > server.js
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello from your EC2 instance!');
+});
+
+server.listen(3000, '0.0.0.0', () => {
+  console.log('Server running at http://0.0.0.0:3000/');
+});
+EOF
+
+node server.js
+
+# ----------------- REMOVE IT -----------------------------------------

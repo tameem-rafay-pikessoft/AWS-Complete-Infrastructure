@@ -49,6 +49,17 @@ variable "VPC_ID" {
   description = "VPC ID used for loadbalancer ..."
 }
 
+variable "ec2_role_permissions" {
+  type        = list(string)
+  description = "List of permissions to attach to the EC2 role"
+  default = [
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+  ]
+}
+
 variable "tags" {
   type    = map(string)
   default = {}
