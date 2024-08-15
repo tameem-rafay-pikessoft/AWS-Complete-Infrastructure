@@ -209,3 +209,13 @@ variable "max_account_monthly_budget" {
   type        = number
   default     = 30
 }
+
+# ----------------------------------------------------------------
+# ---------- ECR REPOSITORY DETAILS FOR STORING IMAGE  -----------
+# ----------------------------------------------------------------
+
+variable "ecr_repository_name" {
+  description = "ECR Repository Name for storing the docker images"
+  type        = string
+  default     = "test-ecr-repo"
+}

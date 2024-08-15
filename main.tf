@@ -41,6 +41,12 @@ module "aws_cloudwatch_resource_monitoring_alerts" {
   tags                              = local.common_tags
 }
 
+module "aws_ecr_repository_module" {
+  source              = "./module/ecr_repository"
+  ecr_repository_name = var.ecr_repository_name
+  tags                = local.common_tags
+}
+
 # module "load_balancer_module" {
 #   source          = "./module/load_balancer_module"
 #   VPC_Subnets_ids = var.VPC_Subnets_ids
@@ -90,6 +96,7 @@ module "ec2_auto_scaling_module" {
 # module "code_pipeline_module" {
 #   source                                    = "./module/code_pipeline_module"
 #   AWSCodePipeLineName                       = var.AWSCodePipeLineName
+#   ECR_REPOSITORY_URI                        = module.aws_ecr_repository_module.ecr_repository_uri
 #   instance_name                             = module.ec2_instance_module.instance_details.instance_name
 #   FullRepositoryId                          = var.FullRepositoryId
 #   BranchName                                = var.BranchName

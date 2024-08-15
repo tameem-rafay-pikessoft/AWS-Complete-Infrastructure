@@ -37,12 +37,17 @@ variable "CodeStarConnectionArn" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"
 }
+variable "ECR_REPOSITORY_URI" {
+  type        = string
+  description = "ECR_REPOSITORY_URI for storing in the envirnment variable"
+}
 
 variable "CodeBuildPolicies" {
   default = [
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
     "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
     "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess",
+    # "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
   ]
 }
