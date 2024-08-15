@@ -37,6 +37,7 @@ module "aws_max_monthly_budget" {
 module "aws_cloudwatch_resource_monitoring_alerts" {
   source                            = "./module/cloud_watch_alerts"
   cloudwatch_alerts_email_addresses = var.developers_notification_email_addresses
+  autoscaling_group_name            = module.ec2_auto_scaling_module.autoscaling_group_name
   tags                              = local.common_tags
 }
 
