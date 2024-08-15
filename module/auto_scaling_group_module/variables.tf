@@ -31,6 +31,7 @@ variable "instance_type" {
 variable "elb_security_group_id" {
   type        = string
   description = "Security Group that is attached with EC2 instance"
+  default     = ""
 }
 
 variable "ec2_security_group_id" {

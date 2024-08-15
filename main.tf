@@ -1,6 +1,6 @@
 provider "aws" {
   region  = var.aws_region
-  profile = "test-aws-terraform-Infrastructure" // AWS CLI profile locally
+  profile = var.aws_profile // AWS CLI profile locally
 }
 
 locals {
@@ -16,6 +16,8 @@ module "parameter_store_module" {
   source               = "./module/parameter_store_module"
   parameter_store_name = var.parameter_store_name
   tags                 = local.common_tags
+  aws_region           = var.aws_region
+  aws_profile          = var.aws_profile
 }
 
 module "cloudwatch_logs_module" {
@@ -41,48 +43,54 @@ module "aws_max_monthly_budget" {
 # }
 
 module "ec2_security_group_module" {
-  source          = "./module/security_group_module"
+  source         = "./module/security_group_module"
   ssh_allowed_ip = var.ssh_allowed_ip
 }
 
-
-module "ec2_instance_module" {
-  source                     = "./module/ec2_instance_module"
-  ami                        = var.ec2_instance_ami # ami: aws linux machine
-  instance_type              = var.ec2_instance_type
-  instance_name              = var.ec2_instance_name
+module "aws_key_pair_module" {
+  source                     = "./module/aws_key_pair_module"
   ec2_instance_pem_file_name = var.ec2_instance_pem_file_name
-  ec2_security_group_id      = module.ec2_security_group_module.security_group_id
-  ssh_allowed_ip             = var.ssh_allowed_ip
-  tags                       = local.common_tags
 }
 
-# module "ec2_auto_scaling_module" {
-#   source                = "./module/auto_scaling_group_module"
-#   instance_type         = var.ec2_instance_type
-#   ami                   = var.ec2_instance_ami
-#   VPC_Subnets_ids       = var.VPC_Subnets_ids
-#   elb_security_group_id = module.load_balancer_module.elb_security_group_id
-#   ec2_security_group_id = module.ec2_security_group_module.security_group_id
-#   ec2_key_pair_name     = module.ec2_instance_module.ec2_key_pair_name
-#   min_size              = var.min_size
-#   max_size              = var.max_size  
-#   desired_capacity      = var.desired_capacity
-#   VPC_ID                = var.VPC_ID
-#   tags                  = local.common_tags
+
+# module "ec2_instance_module" {
+#   source                     = "./module/ec2_instance_module"
+#   ami                        = var.ec2_instance_ami # ami: aws linux machine
+#   instance_type              = var.ec2_instance_type
+#   instance_name              = var.ec2_instance_name
+#   # ec2_instance_pem_file_name = var.ec2_instance_pem_file_name
+#   ec2_key_pair_name          = module.aws_key_pair_module.ec2_key_pair_name
+#   ec2_security_group_id      = module.ec2_security_group_module.security_group_id
+#   ssh_allowed_ip             = var.ssh_allowed_ip
+#   tags                       = local.common_tags
 # }
 
-module "code_pipeline_module" {
-  source                                    = "./module/code_pipeline_module"
-  AWSCodePipeLineName                       = var.AWSCodePipeLineName
-  instance_name                             = module.ec2_instance_module.instance_details.instance_name
-  FullRepositoryId                          = var.FullRepositoryId
-  BranchName                                = var.BranchName
-  CodeStarConnectionArn                     = var.CodeStarConnectionArn
-  s3BucketNameForArtifacts                  = var.s3BucketNameForArtifacts
-  codePipeline_notification_email_addresses = var.codePipeline_notification_email_addresses
-  tags                                      = local.common_tags
+module "ec2_auto_scaling_module" {
+  source                = "./module/auto_scaling_group_module"
+  instance_type         = var.ec2_instance_type
+  ami                   = var.ec2_instance_ami
+  VPC_Subnets_ids       = var.VPC_Subnets_ids
+  # elb_security_group_id = module.load_balancer_module.elb_security_group_id
+  ec2_security_group_id = module.ec2_security_group_module.security_group_id
+  ec2_key_pair_name     = module.aws_key_pair_module.ec2_key_pair_name
+  min_size              = var.min_size
+  max_size              = var.max_size
+  desired_capacity      = var.desired_capacity
+  VPC_ID                = var.VPC_ID
+  tags                  = local.common_tags
 }
+
+# module "code_pipeline_module" {
+#   source                                    = "./module/code_pipeline_module"
+#   AWSCodePipeLineName                       = var.AWSCodePipeLineName
+#   instance_name                             = module.ec2_instance_module.instance_details.instance_name
+#   FullRepositoryId                          = var.FullRepositoryId
+#   BranchName                                = var.BranchName
+#   CodeStarConnectionArn                     = var.CodeStarConnectionArn
+#   s3BucketNameForArtifacts                  = var.s3BucketNameForArtifacts
+#   codePipeline_notification_email_addresses = var.codePipeline_notification_email_addresses
+#   tags                                      = local.common_tags
+# }
 
 
 
@@ -109,10 +117,10 @@ output "cloudwatch_stream_name" {
 # }
 
 
-output "module_ec2_instance_details" {
-  value = module.ec2_instance_module.instance_details
-}
+# output "module_ec2_instance_details" {
+#   value = module.ec2_instance_module.instance_details
+# }
 
-output "ec2_instance_ssh_details" {
-  value = "ssh -i ~/Downloads/${var.ec2_instance_pem_file_name}.pem ec2-user@${module.ec2_instance_module.public_dns}"
-}
+# output "ec2_instance_ssh_details" {
+#   value = "ssh -i ~/Downloads/${var.ec2_instance_pem_file_name}.pem ec2-user@${module.ec2_instance_module.public_dns}"
+# }

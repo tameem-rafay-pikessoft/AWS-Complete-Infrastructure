@@ -3,6 +3,11 @@ variable "aws_region" {
   description = "AWS region where resources will be provisioned"
   default     = "us-east-1" # Replace with your desired default region
 }
+variable "aws_profile" {
+  type        = string
+  description = "AWS profile that is setup locally"
+  default     = "test-aws-terraform-Infrastructure" # Replace with your desired default region
+}
 
 # ----------------------------------------------------------------
 # ---------------------- AWS Resource Tags -----------------------
@@ -154,7 +159,7 @@ variable "s3BucketNameForArtifacts" {
 variable "CodeStarConnectionArn" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"
-  default     = "arn:aws:codestar-connections:us-east-1:730335344990:connection/46c77192-2db7-4df3-9306-be81f191c928"
+  default     = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
 }
 
 

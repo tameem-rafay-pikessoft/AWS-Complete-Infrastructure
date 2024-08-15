@@ -3,14 +3,14 @@ resource "tls_private_key" "key" {
   rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "ec2_key_pair" {
-  key_name   = var.ec2_instance_pem_file_name
-  public_key = tls_private_key.key.public_key_openssh
-  provisioner "local-exec" { # Create "myKey.pem" to your computer!!
-    command = "echo '${tls_private_key.key.private_key_pem}' > ./${var.ec2_instance_pem_file_name}.pem"
-  }
-  tags = var.tags
-}
+# resource "aws_key_pair" "ec2_key_pair" {
+#   key_name   = var.ec2_instance_pem_file_name
+#   public_key = tls_private_key.key.public_key_openssh
+#   provisioner "local-exec" { # Create "myKey.pem" to your computer!!
+#     command = "echo '${tls_private_key.key.private_key_pem}' > ./${var.ec2_instance_pem_file_name}.pem"
+#   }
+#   tags = var.tags
+# }
 
 # Create the role for EC2 instance
 resource "aws_iam_role" "EC2_Service_Role" {
@@ -48,7 +48,7 @@ resource "aws_instance" "ec2_instance" {
   user_data              = file("${path.module}/../../Utils/EC2_user_data.sh")
   iam_instance_profile   = aws_iam_instance_profile.EC2_instance_profile.name
   vpc_security_group_ids = [var.ec2_security_group_id]
-  key_name               = aws_key_pair.ec2_key_pair.key_name #
+  key_name               = var.ec2_key_pair_name 
   tags = merge(var.tags, {
     Name = var.instance_name
   })

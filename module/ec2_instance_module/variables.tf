@@ -37,7 +37,11 @@ variable "instance_type" {
   description = "Instance type for the EC2 instance"
 }
 
-variable "ec2_instance_pem_file_name" {
+# variable "ec2_instance_pem_file_name" {
+#   description = ".pem file name for EC2 instance"
+# }
+
+variable "ec2_key_pair_name" {
   description = ".pem file name for EC2 instance"
 }
 
