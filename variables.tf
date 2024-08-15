@@ -130,7 +130,7 @@ variable "developers_notification_email_addresses" {
 variable "FullRepositoryId" {
   type        = string
   description = "Repository used in code pipeline"
-  default     = "TheEquipGroup/equipx_be"
+  default     = "rafay-tariq/equipx-test-demo"
 }
 
 variable "AWSCodePipeLineName" {
@@ -142,7 +142,7 @@ variable "AWSCodePipeLineName" {
 variable "BranchName" {
   type        = string
   description = "Select branch from repository "
-  default     = "development"
+  default     = "master"
 }
 
 variable "s3BucketNameForArtifacts" {

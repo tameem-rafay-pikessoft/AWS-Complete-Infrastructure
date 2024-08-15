@@ -93,18 +93,18 @@ module "ec2_auto_scaling_module" {
   tags                  = local.common_tags
 }
 
-# module "code_pipeline_module" {
-#   source                                    = "./module/code_pipeline_module"
-#   AWSCodePipeLineName                       = var.AWSCodePipeLineName
-#   ECR_REPOSITORY_URI                        = module.aws_ecr_repository_module.ecr_repository_uri
-#   instance_name                             = module.ec2_instance_module.instance_details.instance_name
-#   FullRepositoryId                          = var.FullRepositoryId
-#   BranchName                                = var.BranchName
-#   CodeStarConnectionArn                     = var.CodeStarConnectionArn
-#   s3BucketNameForArtifacts                  = var.s3BucketNameForArtifacts
-#   codePipeline_notification_email_addresses = var.developers_notification_email_addresses
-#   tags                                      = local.common_tags
-# }
+module "code_pipeline_module" {
+  source                                    = "./module/code_pipeline_module"
+  AWSCodePipeLineName                       = var.AWSCodePipeLineName
+  ECR_REPOSITORY_URI                        = module.aws_ecr_repository_module.ecr_repository_url
+  autoscaling_group_name                    = module.ec2_auto_scaling_module.autoscaling_group_name
+  FullRepositoryId                          = var.FullRepositoryId
+  BranchName                                = var.BranchName
+  CodeStarConnectionArn                     = var.CodeStarConnectionArn
+  s3BucketNameForArtifacts                  = var.s3BucketNameForArtifacts
+  codePipeline_notification_email_addresses = var.developers_notification_email_addresses
+  tags                                      = local.common_tags
+}
 
 
 

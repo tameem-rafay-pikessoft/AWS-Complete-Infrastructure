@@ -79,6 +79,6 @@ resource "aws_launch_template" "launch_template" {
   user_data = base64encode(file("${path.module}/../../Utils/EC2_user_data.sh"))
 
   network_interfaces {
-    security_groups = compact([var.elb_security_group_id != null ? var.elb_security_group_id : "", var.ec2_security_group_id])
+    security_groups = compact([var.elb_security_group_id, var.ec2_security_group_id])
   }
 }

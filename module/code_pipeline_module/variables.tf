@@ -3,9 +3,9 @@ variable "tags" {
   default = {}
 }
 
-variable "instance_name" {
+variable "autoscaling_group_name" {
   type        = string
-  description = "Instance name that is included in deployment group"
+  description = "autoscaling_group_name that is included in deployment group"
 }
 
 variable "AWSCodePipeLineName" {

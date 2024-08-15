@@ -37,12 +37,7 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
   deployment_group_name  = "codedeploy-deployment-group"
   deployment_config_name = "CodeDeployDefault.AllAtOnce"    # All at once not In place
   service_role_arn       = aws_iam_role.codedeploy_role.arn # Use the newly created IAM role
-
-  ec2_tag_filter {
-    key   = "Name"
-    value = var.instance_name
-    type  = "KEY_AND_VALUE"
-  }
+  autoscaling_groups     = [var.autoscaling_group_name]
 }
 
 # Create IAM role for AWS CodePipeline
@@ -96,17 +91,46 @@ resource "aws_iam_policy" "codedeploy_policy" {
   })
 }
 
+resource "aws_iam_policy" "codepipeline_policy" {
+  name        = "codepipeline_policy"
+  description = "Policy for allowing CodePipeline to start CodeBuild"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:StartBuild",
+        "codebuild:BatchGetBuilds",
+        "codebuild:BatchGetProjects"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+# ------------------------------------------------------------
 # Attach IAM policy to IAM role associated with CodePipeline
+# ------------------------------------------------------------
 resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
   role       = aws_iam_role.codepipeline_role.name
   policy_arn = aws_iam_policy.codedeploy_policy.arn
 }
-
-# Attach IAM policy to IAM role
 resource "aws_iam_role_policy_attachment" "codepipeline_s3_policy_attachment" {
   role       = aws_iam_role.codepipeline_role.name
   policy_arn = aws_iam_policy.codepipeline_s3_policy.arn
 }
+resource "aws_iam_role_policy_attachment" "codepipeline_policy_attachment" {
+  role       = aws_iam_role.codepipeline_role.name
+  policy_arn = aws_iam_policy.codepipeline_policy.arn
+}
+
+# ------------------------------------------------------------
+# Attach IAM policy to IAM role associated with CodePipeline
+# ------------------------------------------------------------
 
 resource "aws_iam_role_policy" "codepipeline_assume_role_policy" {
   name = "codepipeline-assume-role-policy"
