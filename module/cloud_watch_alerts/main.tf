@@ -5,12 +5,12 @@ resource "aws_sns_topic" "alerts_topic" {
 
 resource "aws_sns_topic_subscription" "email_subscription" {
   for_each  = toset(var.cloudwatch_alerts_email_addresses)
-  topic_arn = aws_sns_topic.codepipeline_notifications.arn
+  topic_arn = aws_sns_topic.alerts_topic.arn
   protocol  = "email"
   endpoint  = each.value
 }
 
-resource "aws_cloudwatch_alarm" "ram_usage_alarm" {
+resource "aws_cloudwatch_metric_alarm" "ram_usage_alarm" {
   alarm_name                = "High_RAM_Usage_Alarm"
   comparison_operator       = "GreaterThanThreshold"
   evaluation_periods        = "1"
@@ -26,7 +26,7 @@ resource "aws_cloudwatch_alarm" "ram_usage_alarm" {
   tags                      = var.tags
 }
 
-resource "aws_cloudwatch_alarm" "disk_usage_alarm" {
+resource "aws_cloudwatch_metric_alarm" "disk_usage_alarm" {
   alarm_name                = "High_Disk_Usage_Alarm"
   comparison_operator       = "GreaterThanThreshold"
   evaluation_periods        = "1"
@@ -42,7 +42,7 @@ resource "aws_cloudwatch_alarm" "disk_usage_alarm" {
   tags                      = var.tags
 }
 
-resource "aws_cloudwatch_alarm" "cpu_usage_alarm" {
+resource "aws_cloudwatch_metric_alarm" "cpu_usage_alarm" {
   alarm_name                = "High_CPU_Usage_Alarm"
   comparison_operator       = "GreaterThanThreshold"
   evaluation_periods        = "1"
