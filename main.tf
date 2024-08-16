@@ -129,6 +129,7 @@ output "cloudwatch_stream_name" {
 }
 
 # todo: fix cloudwatch monitoring of ec2 instance
+# todo: fix code pipeline error notification
 
 output "load_balancer_dns" {
   value = module.load_balancer_module.load_balancer_url
