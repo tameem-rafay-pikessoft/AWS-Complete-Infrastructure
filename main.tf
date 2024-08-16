@@ -37,7 +37,7 @@ module "aws_max_monthly_budget" {
 module "aws_cloudwatch_resource_monitoring_alerts" {
   source                            = "./module/cloud_watch_alerts"
   cloudwatch_alerts_email_addresses = var.developers_notification_email_addresses
-  autoscaling_group_name            = module.ec2_auto_scaling_module.autoscaling_group_name
+  autoscaling_group_name            = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   tags                              = local.common_tags
 }
 
@@ -97,7 +97,7 @@ module "code_pipeline_BE_module" {
   source                                    = "./module/code_pipeline_module"
   AWSCodePipeLineName                       = var.AWSCodePipeLineName
   ECR_REPOSITORY_URI                        = module.aws_ecr_repository_for_BE_module.ecr_repository_url
-  autoscaling_group_name                    = module.ec2_auto_scaling_module.autoscaling_group_name
+  autoscaling_group_name                    = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   FullRepositoryId                          = var.FullRepositoryId
   BranchName                                = var.BranchName
   CodeStarConnectionArn                     = var.CodeStarConnectionArn

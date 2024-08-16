@@ -73,13 +73,36 @@ EOF'
 # Start the CloudWatch agent
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 
-# to check the status of agent
+# to check the status of code deploy agent
 # sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
 # sudo journalctl -u amazon-cloudwatch-agent.service
 # sudo systemctl restart amazon-cloudwatch-agent.service
 
 
+# Install NGINX For reverse proxy
+yum install -y nginx
 
+# Create the NGINX configuration file for the reverse proxy
+cat > /etc/nginx/conf.d/reverse-proxy.conf <<EOF
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000; # Replace 3000 with the port your application is running on
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+}
+EOF
+
+# Remove the default configuration to avoid conflicts
+rm -f /etc/nginx/conf.d/default.conf
+
+# Start and enable NGINX service
+service nginx start
+chkconfig nginx on
 
 
 
@@ -106,3 +129,4 @@ EOF
 node server.js
 
 # ----------------- REMOVE IT -----------------------------------------
+
