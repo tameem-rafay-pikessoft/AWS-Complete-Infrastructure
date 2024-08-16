@@ -41,7 +41,7 @@ module "aws_cloudwatch_resource_monitoring_alerts" {
   tags                              = local.common_tags
 }
 
-module "aws_ecr_repository_module" {
+module "aws_ecr_repository_for_BE_module" {
   source              = "./module/ecr_repository"
   ecr_repository_name = var.ecr_repository_name
   tags                = local.common_tags
@@ -78,7 +78,7 @@ module "aws_key_pair_module" {
 #   tags                       = local.common_tags
 # }
 
-module "ec2_auto_scaling_module" {
+module "ec2_auto_scaling_BE_module" {
   source          = "./module/auto_scaling_group_module"
   instance_type   = var.ec2_instance_type
   ami             = var.ec2_instance_ami
@@ -93,10 +93,10 @@ module "ec2_auto_scaling_module" {
   tags                  = local.common_tags
 }
 
-module "code_pipeline_module" {
+module "code_pipeline_BE_module" {
   source                                    = "./module/code_pipeline_module"
   AWSCodePipeLineName                       = var.AWSCodePipeLineName
-  ECR_REPOSITORY_URI                        = module.aws_ecr_repository_module.ecr_repository_url
+  ECR_REPOSITORY_URI                        = module.aws_ecr_repository_for_BE_module.ecr_repository_url
   autoscaling_group_name                    = module.ec2_auto_scaling_module.autoscaling_group_name
   FullRepositoryId                          = var.FullRepositoryId
   BranchName                                = var.BranchName
@@ -125,6 +125,8 @@ output "cloudwatch_logs_group_name" {
 output "cloudwatch_stream_name" {
   value = module.cloudwatch_logs_module.cloudwatch_stream_name
 }
+
+# todo: fix cloudwatch monitoring of ec2 instance
 
 # output "load_balancer_dns" {
 #   value = module.load_balancer_module.load_balancer_url
