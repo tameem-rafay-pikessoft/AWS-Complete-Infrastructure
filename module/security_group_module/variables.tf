@@ -13,6 +13,12 @@ variable "security_group_allowed_ports" {
   default     = [80, 443]
 }
 
+variable "elb_security_group_id" {
+  type        = string
+  description = "Id of ELB security group"
+  default     = ""
+}
+
 
 variable "tags" {
   type    = map(string)

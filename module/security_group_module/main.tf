@@ -19,6 +19,17 @@ resource "aws_security_group" "ec2_security_group" {
     }
   }
 
+  dynamic "ingress" {
+    for_each = var.elb_security_group_id != "" ? [1] : []
+    content {
+      from_port       = 0
+      to_port         = 0
+      protocol        = "-1"
+      security_groups = [var.elb_security_group_id]
+    }
+  }
+
+
   egress {
     from_port   = 0
     to_port     = 0

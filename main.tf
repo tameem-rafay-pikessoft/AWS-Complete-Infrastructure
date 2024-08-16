@@ -47,17 +47,18 @@ module "aws_ecr_repository_for_BE_module" {
   tags                = local.common_tags
 }
 
-# module "load_balancer_module" {
-#   source          = "./module/load_balancer_module"
-#   VPC_Subnets_ids = var.VPC_Subnets_ids
-#   VPC_ID          = var.VPC_ID
-#   tags            = local.common_tags
-#   elb_public_name = var.elb_public_name
-# }
+module "load_balancer_module" {
+  source          = "./module/load_balancer_module"
+  VPC_Subnets_ids = var.VPC_Subnets_ids
+  VPC_ID          = var.VPC_ID
+  elb_public_name = var.elb_public_name
+  tags            = local.common_tags
+}
 
-module "ec2_security_group_module" {
-  source         = "./module/security_group_module"
-  ssh_allowed_ip = var.ssh_allowed_ip
+module "ec2_security_group_for_auto_scaling_module" {
+  source                = "./module/security_group_module"
+  elb_security_group_id = module.load_balancer_module.elb_security_group_id
+  ssh_allowed_ip        = var.ssh_allowed_ip
 }
 
 module "aws_key_pair_module" {
@@ -73,19 +74,20 @@ module "aws_key_pair_module" {
 #   instance_name              = var.ec2_instance_name
 #   # ec2_instance_pem_file_name = var.ec2_instance_pem_file_name
 #   ec2_key_pair_name          = module.aws_key_pair_module.ec2_key_pair_name
-#   ec2_security_group_id      = module.ec2_security_group_module.security_group_id
+#   ec2_security_group_id      = module.ec2_security_group_for_auto_scaling_module.security_group_id
 #   ssh_allowed_ip             = var.ssh_allowed_ip
 #   tags                       = local.common_tags
 # }
 
 module "ec2_auto_scaling_BE_module" {
-  source          = "./module/auto_scaling_group_module"
-  instance_type   = var.ec2_instance_type
-  ami             = var.ec2_instance_ami
-  VPC_Subnets_ids = var.VPC_Subnets_ids
-  # elb_security_group_id = module.load_balancer_module.elb_security_group_id
-  ec2_security_group_id = module.ec2_security_group_module.security_group_id
+  source                = "./module/auto_scaling_group_module"
+  instance_type         = var.ec2_instance_type
+  ami                   = var.ec2_instance_ami
+  VPC_Subnets_ids       = var.VPC_Subnets_ids
+  elb_security_group_id = module.load_balancer_module.elb_security_group_id
+  ec2_security_group_id = module.ec2_security_group_for_auto_scaling_module.security_group_id
   ec2_key_pair_name     = module.aws_key_pair_module.ec2_key_pair_name
+  target_group_arn      = module.load_balancer_module.target_group_arn
   min_size              = var.min_size
   max_size              = var.max_size
   desired_capacity      = var.desired_capacity
@@ -128,9 +130,9 @@ output "cloudwatch_stream_name" {
 
 # todo: fix cloudwatch monitoring of ec2 instance
 
-# output "load_balancer_dns" {
-#   value = module.load_balancer_module.load_balancer_url
-# }
+output "load_balancer_dns" {
+  value = module.load_balancer_module.load_balancer_url
+}
 
 
 # output "module_ec2_instance_details" {

@@ -9,3 +9,9 @@ output "load_balancer_url" {
 output "elb_security_group_id" {
   value = aws_security_group.elb_sg.id
 }
+
+# so that we can use this in the autoscaling group
+output "target_group_arn" {
+  description = "The ARN of the target group"
+  value       = aws_lb_target_group.lb_target_group.arn
+}

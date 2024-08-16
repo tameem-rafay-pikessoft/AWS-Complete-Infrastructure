@@ -60,6 +60,12 @@ variable "ec2_role_permissions" {
   ]
 }
 
+variable "target_group_arn" {
+  description = "The ARN of the target group to add to the Auto Scaling group"
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   type    = map(string)
   default = {}
