@@ -4,6 +4,9 @@ resource "aws_codedeploy_app" "code_pipeline_app" {
   compute_platform = "Server" # For EC2 instances
 }
 
+# todo: 
+# 1. codedeploy-deployment-group
+# 2. code build environment_variable
 
 # Create IAM role for AWS CodeDeploy
 resource "aws_iam_role" "codedeploy_role" {
@@ -161,9 +164,19 @@ resource "aws_s3_bucket" "store_pipeline_artifacts_bucket" {
 
 # Create CodePipeline
 resource "aws_codepipeline" "code_pipeline" {
-  name     = var.AWSCodePipeLineName
-  role_arn = aws_iam_role.codepipeline_role.arn
-  tags     = var.tags
+  name          = var.AWSCodePipeLineName
+  role_arn      = aws_iam_role.codepipeline_role.arn
+  pipeline_type = "V2"
+
+  dynamic "variable" {
+      for_each = var.PipelineVariables
+      content {
+        name  = variable.key
+        default_value = variable.value
+      }
+    }
+
+  tags = var.tags
   artifact_store {
     location = aws_s3_bucket.store_pipeline_artifacts_bucket.bucket
     type     = "S3"
@@ -175,7 +188,7 @@ resource "aws_codepipeline" "code_pipeline" {
 
     action {
 
-      name             = "SourceAction"
+      name             = "Source"
       category         = "Source"
       owner            = "AWS"
       provider         = "CodeStarSourceConnection"
@@ -265,6 +278,10 @@ resource "aws_iam_role_policy_attachment" "policy_attachments" {
   policy_arn = each.value
 }
 
+resource "aws_cloudwatch_log_group" "codebuild_log_group" {
+  name = format("/codebuild/%s", var.AWSCodePipeLineName)
+}
+
 resource "aws_codebuild_project" "code_build" {
   name          = "code-build-project"
   description   = "CodeBuild project"
@@ -283,15 +300,11 @@ resource "aws_codebuild_project" "code_build" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
 
-    environment_variable {
-      name  = "ECR_REPOSITORY_URI"
-      value = var.ECR_REPOSITORY_URI
-    }
   }
   logs_config {
     cloudwatch_logs {
-      group_name  = format("aws/codebuild/%s", var.AWSCodePipeLineName)
-      stream_name = format("aws/codebuild/%s", var.AWSCodePipeLineName)
+      group_name  = format("/codebuild/%s", var.AWSCodePipeLineName)
+      stream_name = format("/codebuild/%s", var.AWSCodePipeLineName)
     }
   }
 }

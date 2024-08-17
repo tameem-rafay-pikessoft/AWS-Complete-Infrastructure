@@ -37,9 +37,10 @@ variable "CodeStarConnectionArn" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"
 }
-variable "ECR_REPOSITORY_URI" {
-  type        = string
-  description = "ECR_REPOSITORY_URI for storing in the envirnment variable"
+variable "PipelineVariables" {
+  description = "Environment variables for the CodeBuild project"
+  type        = map(string)
+  default     = {}
 }
 
 variable "CodeBuildPolicies" {

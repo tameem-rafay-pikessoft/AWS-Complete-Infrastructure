@@ -96,9 +96,11 @@ module "ec2_auto_scaling_BE_module" {
 }
 
 module "code_pipeline_BE_module" {
-  source                                    = "./module/code_pipeline_module"
-  AWSCodePipeLineName                       = var.AWSCodePipeLineName
-  ECR_REPOSITORY_URI                        = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+  source              = "./module/code_pipeline_module"
+  AWSCodePipeLineName = var.AWSCodePipeLineName
+  PipelineVariables = {
+    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+  }
   autoscaling_group_name                    = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   FullRepositoryId                          = var.FullRepositoryId
   BranchName                                = var.BranchName
