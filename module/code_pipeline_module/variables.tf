@@ -37,11 +37,19 @@ variable "CodeStarConnectionArn" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"
 }
+
+variable "sns_topic_arn" {
+  type        = string
+  description = "sns topic arn where to send the pipeline notifications"
+}
+
 variable "PipelineVariables" {
   description = "Environment variables for the CodeBuild project"
   type        = map(string)
   default     = {}
 }
+
+
 
 variable "CodeBuildPolicies" {
   default = [

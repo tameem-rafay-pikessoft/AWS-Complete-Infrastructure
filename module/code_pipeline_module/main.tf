@@ -169,12 +169,12 @@ resource "aws_codepipeline" "code_pipeline" {
   pipeline_type = "V2"
 
   dynamic "variable" {
-      for_each = var.PipelineVariables
-      content {
-        name  = variable.key
-        default_value = variable.value
-      }
+    for_each = var.PipelineVariables
+    content {
+      name          = variable.key
+      default_value = variable.value
     }
+  }
 
   tags = var.tags
   artifact_store {
@@ -248,7 +248,7 @@ resource "aws_codestarnotifications_notification_rule" "codepipeline_notificatio
   status         = "ENABLED"
 
   target {
-    address = aws_sns_topic.codepipeline_notifications.arn
+    address = var.sns_topic_arn
   }
 }
 
@@ -311,19 +311,19 @@ resource "aws_codebuild_project" "code_build" {
 
 
 
-# ------------------------------------------------------------
-# -------------- BUILD STAGE CONFIGURATIONS ------------
-# ------------------------------------------------------------
+# # ------------------------------------------------------------
+# # -------------- BUILD STAGE CONFIGURATIONS ------------
+# # ------------------------------------------------------------
 
-# Create SNS topic
-resource "aws_sns_topic" "codepipeline_notifications" {
-  name = "codepipeline-notifications"
-}
+# # Create SNS topic
+# resource "aws_sns_topic" "codepipeline_notifications" {
+#   name = "codepipeline-notifications"
+# }
 
-# Subscribe email to SNS topic
-resource "aws_sns_topic_subscription" "email_subscription" {
-  for_each  = toset(var.codePipeline_notification_email_addresses)
-  topic_arn = aws_sns_topic.codepipeline_notifications.arn
-  protocol  = "email"
-  endpoint  = each.value
-}
+# # Subscribe email to SNS topic
+# resource "aws_sns_topic_subscription" "email_subscription" {
+#   for_each  = toset(var.codePipeline_notification_email_addresses)
+#   topic_arn = aws_sns_topic.codepipeline_notifications.arn
+#   protocol  = "email"
+#   endpoint  = each.value
+# }

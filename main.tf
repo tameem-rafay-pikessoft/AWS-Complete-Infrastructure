@@ -66,6 +66,11 @@ module "aws_key_pair_module" {
   ec2_instance_pem_file_name = var.ec2_instance_pem_file_name
 }
 
+module "sns_topic_module" {
+  source                       = "./module/sns_topic"
+  notification_email_addresses = var.developers_notification_email_addresses
+}
+
 
 # module "ec2_instance_module" {
 #   source                     = "./module/ec2_instance_module"
@@ -101,6 +106,7 @@ module "code_pipeline_BE_module" {
   PipelineVariables = {
     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
   }
+  sns_topic_arn                             = module.sns_topic_module.sns_topic_arn
   autoscaling_group_name                    = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   FullRepositoryId                          = var.FullRepositoryId
   BranchName                                = var.BranchName
@@ -110,6 +116,34 @@ module "code_pipeline_BE_module" {
   tags                                      = local.common_tags
 }
 
+# ----------------------------------------------------------------
+# ---------------------- FrontEnd Admin Panel --------------------
+# ----------------------------------------------------------------
+
+
+module "s3_cloudfront_for_admin_panel" {
+  source      = "./module/s3_cloudfront_module"
+  bucket_name = "my-react-app"
+  origin_id   = "myS3Origin"
+  price_class = "PriceClass_200"
+  tags        = local.common_tags
+}
+
+# module "code_pipeline_FE_Admin_panel_module" {
+#   source              = "./module/code_pipeline_module"
+#   AWSCodePipeLineName = var.AWSCodePipeLineName
+#   PipelineVariables = {
+#     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+#   }
+#   sns_topic_arn                             = module.sns_topic_module.sns_topic_arn
+#   autoscaling_group_name                    = module.ec2_auto_scaling_BE_module.autoscaling_group_name
+#   FullRepositoryId                          = var.FullRepositoryId
+#   BranchName                                = var.BranchName
+#   CodeStarConnectionArn                     = var.CodeStarConnectionArn
+#   s3BucketNameForArtifacts                  = var.s3BucketNameForArtifacts
+#   codePipeline_notification_email_addresses = var.developers_notification_email_addresses
+#   tags                                      = local.common_tags
+# }
 
 
 
@@ -117,6 +151,9 @@ module "code_pipeline_BE_module" {
 # ---------------------- OUTPUT SECTION --------------------------
 # ----------------------------------------------------------------
 
+output "s3_cloudfront_for_admin_panel" {
+  value = module.s3_cloudfront_for_admin_panel.cloudfront_distribution_url
+}
 
 output "parameter_store_name" {
   value = module.parameter_store_module.parameter_store_name
