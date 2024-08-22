@@ -3,10 +3,6 @@ variable "tags" {
   default = {}
 }
 
-variable "autoscaling_group_name" {
-  type        = string
-  description = "autoscaling_group_name that is included in deployment group"
-}
 
 variable "AWSCodePipeLineName" {
   type        = string
@@ -41,6 +37,16 @@ variable "CodeStarConnectionArn" {
 variable "sns_topic_arn" {
   type        = string
   description = "sns topic arn where to send the pipeline notifications"
+}
+
+variable "deployment_config" {
+  description = "Configuration for deployment"
+  type = object({
+    deploy_artifacts_bucket_name = optional(string, "")
+    deploy_artifacts_bucket_key  = optional(string, "")
+    is_deploy_on_s3_bucket       = optional(bool, false)
+    autoscaling_group_name       = optional(string, "")
+  })
 }
 
 variable "PipelineVariables" {

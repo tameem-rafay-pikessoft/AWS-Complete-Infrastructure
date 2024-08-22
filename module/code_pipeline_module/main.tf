@@ -34,13 +34,18 @@ resource "aws_iam_policy_attachment" "codedeploy_policy_attachment" {
 }
 
 
-# Create CodeDeploy Deployment Group
 resource "aws_codedeploy_deployment_group" "codedeploy_group" {
+  count                  = var.deployment_config.is_deploy_on_s3_bucket ? 0 : 1
   app_name               = aws_codedeploy_app.code_pipeline_app.name
   deployment_group_name  = "codedeploy-deployment-group"
-  deployment_config_name = "CodeDeployDefault.AllAtOnce"    # All at once not In place
-  service_role_arn       = aws_iam_role.codedeploy_role.arn # Use the newly created IAM role
-  autoscaling_groups     = [var.autoscaling_group_name]
+  deployment_config_name = "CodeDeployDefault.AllAtOnce"
+  service_role_arn       = aws_iam_role.codedeploy_role.arn
+  autoscaling_groups     = [var.deployment_config.autoscaling_group_name]
+}
+
+resource "aws_s3_bucket" "deploy_bucket" {
+  count  = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
+  bucket = var.deployment_config.deploy_artifacts_bucket_name
 }
 
 # Create IAM role for AWS CodePipeline
@@ -229,12 +234,15 @@ resource "aws_codepipeline" "code_pipeline" {
       name            = "DeployAction"
       category        = "Deploy"
       owner           = "AWS"
-      provider        = "CodeDeploy"
+      provider        = var.deployment_config.is_deploy_on_s3_bucket ? "S3" : "CodeDeploy"
       version         = "1"
       input_artifacts = ["SourceArtifact"]
-      configuration = {
+      configuration = var.deployment_config.is_deploy_on_s3_bucket ? {
+        BucketName = var.deployment_config.deploy_artifacts_bucket_name
+        ObjectKey  = var.deployment_config.deploy_artifacts_bucket_key
+        } : {
         ApplicationName     = aws_codedeploy_app.code_pipeline_app.name
-        DeploymentGroupName = aws_codedeploy_deployment_group.codedeploy_group.deployment_group_name
+        DeploymentGroupName = aws_codedeploy_deployment_group.codedeploy_group[0].deployment_group_name
       }
     }
   }

@@ -2,18 +2,25 @@
 
 resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
-  acl    = "public-read"
-
-  versioning {
-    enabled = true
-  }
-
-  website {
-    index_document = "index.html"
-    error_document = "error.html"
-  }
-  tags = var.tags
 }
+
+resource "aws_s3_bucket_acl" "s3_acl" {
+  bucket = aws_s3_bucket.bucket.id
+  acl    = "public-read"
+}
+
+resource "aws_s3_bucket_website_configuration" "website_config" {
+  bucket = aws_s3_bucket.bucket.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
+}
+
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {

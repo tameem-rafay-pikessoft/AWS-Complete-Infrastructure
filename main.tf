@@ -106,8 +106,11 @@ module "code_pipeline_BE_module" {
   PipelineVariables = {
     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
   }
-  sns_topic_arn                             = module.sns_topic_module.sns_topic_arn
-  autoscaling_group_name                    = module.ec2_auto_scaling_BE_module.autoscaling_group_name
+  sns_topic_arn = module.sns_topic_module.sns_topic_arn
+  deployment_config = {
+    is_deploy_on_s3_bucket = false
+    autoscaling_group_name = module.ec2_auto_scaling_BE_module.autoscaling_group_name
+  }
   FullRepositoryId                          = var.FullRepositoryId
   BranchName                                = var.BranchName
   CodeStarConnectionArn                     = var.CodeStarConnectionArn
@@ -121,13 +124,13 @@ module "code_pipeline_BE_module" {
 # ----------------------------------------------------------------
 
 
-module "s3_cloudfront_for_admin_panel" {
-  source      = "./module/s3_cloudfront_module"
-  bucket_name = "my-react-app"
-  origin_id   = "myS3Origin"
-  price_class = "PriceClass_200"
-  tags        = local.common_tags
-}
+# module "s3_cloudfront_for_admin_panel" {
+#   source      = "./module/s3_cloudfront_module"
+#   bucket_name = "test-demo-admin-panel"
+#   origin_id   = "myS3Origin"
+#   price_class = "PriceClass_200"
+#   tags        = local.common_tags
+# }
 
 # module "code_pipeline_FE_Admin_panel_module" {
 #   source              = "./module/code_pipeline_module"
@@ -151,9 +154,9 @@ module "s3_cloudfront_for_admin_panel" {
 # ---------------------- OUTPUT SECTION --------------------------
 # ----------------------------------------------------------------
 
-output "s3_cloudfront_for_admin_panel" {
-  value = module.s3_cloudfront_for_admin_panel.cloudfront_distribution_url
-}
+# output "s3_cloudfront_for_admin_panel" {
+#   value = module.s3_cloudfront_for_admin_panel.cloudfront_distribution_url
+# }
 
 output "parameter_store_name" {
   value = module.parameter_store_module.parameter_store_name
