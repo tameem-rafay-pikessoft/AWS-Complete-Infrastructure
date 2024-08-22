@@ -10,7 +10,7 @@ resource "aws_codedeploy_app" "code_pipeline_app" {
 
 # Create IAM role for AWS CodeDeploy
 resource "aws_iam_role" "codedeploy_role" {
-  name = var.code_deploy_service_role_name
+  name = var.code_deploy_role_name
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -84,13 +84,13 @@ resource "aws_iam_policy" "codepipeline_policy" {
         "Resource" : "*" // Allow CreateDeployment action on all CodeDeploy resources
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "codebuild:StartBuild",
           "codebuild:BatchGetBuilds",
           "codebuild:BatchGetProjects"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       }
     ]
   })

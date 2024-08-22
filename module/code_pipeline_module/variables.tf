@@ -44,7 +44,7 @@ variable "code_deploy_application_name" {
   description = "application name of code deploy"
 }
 
-variable "code_deploy_service_role_name" {
+variable "code_deploy_role_name" {
   type        = string
   description = "role name for code deploy "
 }
