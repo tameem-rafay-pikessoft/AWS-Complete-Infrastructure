@@ -114,6 +114,7 @@ module "code_pipeline_BE_module" {
     autoscaling_group_name = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   }
   code_deploy_role_name                     = var.BE_PIPELINE_CONFIG.CODE_DEPLOY_ROLE_NAME
+  code_pipeline_role_name                   = var.BE_PIPELINE_CONFIG.CODE_PIPELINE_ROLE_NAME
   code_build_role_name                      = var.BE_PIPELINE_CONFIG.CODE_BUILD_ROLE_NAME
   code_deploy_application_name              = var.BE_PIPELINE_CONFIG.CODE_DEPLOY_APPLICATION_NAME
   FULL_REPOSITORY_ID                        = var.BE_PIPELINE_CONFIG.FULL_REPOSITORY_ID
@@ -150,6 +151,7 @@ module "code_pipeline_FE_Admin_panel_module" {
 
   }
   code_deploy_role_name                     = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_DEPLOY_ROLE_NAME
+  code_pipeline_role_name                   = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_PIPELINE_ROLE_NAME
   code_build_role_name                      = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_BUILD_ROLE_NAME
   code_deploy_application_name              = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_DEPLOY_APPLICATION_NAME
   sns_topic_arn                             = module.sns_topic_module.sns_topic_arn

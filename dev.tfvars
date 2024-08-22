@@ -30,6 +30,7 @@ BE_PIPELINE_CONFIG = {
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
   CODE_DEPLOY_APPLICATION_NAME     = "BE_APPLICATION"
   CODE_DEPLOY_ROLE_NAME            = "code-deploy-be-role"
+  CODE_PIPELINE_ROLE_NAME          = "code-pipeline-be-role"
   CODE_BUILD_ROLE_NAME             = "code-build-be-role"
 }
 
@@ -43,6 +44,7 @@ ADMIN_PANEL_PIPELINE_CONFIG = {
   DEPLOY_ARTIFACTS_BUCKET_KEY      = "artifacts"
   CODE_DEPLOY_APPLICATION_NAME     = "ADMIN-PANEL-APPLICATION"
   CODE_DEPLOY_ROLE_NAME            = "code-deploy-admin-panel-role"
+  CODE_PIPELINE_ROLE_NAME          = "code-pipeline-admin-panel-role"
   CODE_BUILD_ROLE_NAME             = "code-build-admin-panel-role"
 }
 

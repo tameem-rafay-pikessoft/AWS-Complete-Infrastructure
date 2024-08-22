@@ -44,6 +44,10 @@ variable "code_deploy_application_name" {
   description = "application name of code deploy"
 }
 
+variable "code_pipeline_role_name" {
+  type        = string
+  description = "role name for code pipeline "
+}
 variable "code_deploy_role_name" {
   type        = string
   description = "role name for code deploy "
