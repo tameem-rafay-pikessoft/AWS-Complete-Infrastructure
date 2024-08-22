@@ -2,7 +2,7 @@ AWS_REGION      = "us-east-1"
 AWS_PROFILE     = "test-aws-terraform-Infrastructure"
 SSH_ALLOWED_IP  = "39.44.28.92/32"
 PROJECT_NAME    = "test-aws-terraform-Infrastructure"
-ENVIRNMENT_NAME = "Development"
+ENVIRNMENT_NAME = "Dev"
 
 AUTO_SCALING_CONFIG = {
   ASG_MIN_SIZE         = 1
@@ -28,6 +28,7 @@ BE_PIPELINE_CONFIG = {
   BRANCH_NAME                      = "master"
   S3_BUCKET_FOR_PIPELINE_ARTIFACTS = "development-test-project-codepipeline-artifacts"
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
+  CODE_DEPLOY_APPLICATION_NAME     = "BE_APPLICATION"
 }
 
 CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG = {
@@ -44,6 +45,7 @@ ADMIN_PANEL_PIPELINE_CONFIG = {
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/d54fbc76-2224-4c40-9fbc-b0466b464dd2"
   DEPLOY_ARTIFACTS_BUCKET_NAME     = "admin-panel-fe-test"
   DEPLOY_ARTIFACTS_BUCKET_KEY      = "artifacts"
+  CODE_DEPLOY_APPLICATION_NAME     = "ADMIN_PANEL_APPLICATION"
 }
 
 DEFAULT_VPC_ID                              = "vpc-0127e7d874b1d47bf"

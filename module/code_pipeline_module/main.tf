@@ -1,6 +1,6 @@
 # Create CodeDeploy Application
 resource "aws_codedeploy_app" "code_pipeline_app" {
-  name             = "codePipeline-application"
+  name             = var.code_deploy_application_name
   compute_platform = "Server" # For EC2 instances
 }
 

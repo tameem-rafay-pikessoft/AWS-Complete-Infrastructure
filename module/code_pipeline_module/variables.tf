@@ -39,6 +39,11 @@ variable "sns_topic_arn" {
   description = "sns topic arn where to send the pipeline notifications"
 }
 
+variable "code_deploy_application_name" {
+  type        = string
+  description = "application name of code deploy"
+}
+
 variable "deployment_config" {
   description = "Configuration for deployment"
   type = object({

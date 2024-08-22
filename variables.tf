@@ -25,7 +25,7 @@ variable "PROJECT_NAME" {
 
 variable "ENVIRNMENT_NAME" {
   type        = string
-  description = "Environment name (e.g., Development, Staging, Production)"
+  description = "Environment name (e.g., Dev, Stage, Prod)"
 
   validation {
     condition     = contains(["Dev", "Stage", "Prod"], var.ENVIRNMENT_NAME)
@@ -90,6 +90,7 @@ variable "BE_PIPELINE_CONFIG" {
     BRANCH_NAME                      = string
     S3_BUCKET_FOR_PIPELINE_ARTIFACTS = string
     CODE_STAR_CONNECTION_ARN         = string
+    CODE_DEPLOY_APPLICATION_NAME     = string
   })
 }
 variable "CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG" {
@@ -110,6 +111,7 @@ variable "ADMIN_PANEL_PIPELINE_CONFIG" {
     CODE_STAR_CONNECTION_ARN         = string
     DEPLOY_ARTIFACTS_BUCKET_NAME     = string
     DEPLOY_ARTIFACTS_BUCKET_KEY      = string
+    CODE_DEPLOY_APPLICATION_NAME     = string
   })
 }
 
