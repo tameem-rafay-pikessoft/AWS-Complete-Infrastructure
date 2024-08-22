@@ -91,6 +91,9 @@ variable "BE_PIPELINE_CONFIG" {
     S3_BUCKET_FOR_PIPELINE_ARTIFACTS = string
     CODE_STAR_CONNECTION_ARN         = string
     CODE_DEPLOY_APPLICATION_NAME     = string
+    CODE_PIPELINE_ROLE_NAME          = string
+    CODE_DEPLOY_ROLE_NAME            = string
+    CODE_BUILD_ROLE_NAME             = string
   })
 }
 variable "CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG" {
@@ -112,6 +115,9 @@ variable "ADMIN_PANEL_PIPELINE_CONFIG" {
     DEPLOY_ARTIFACTS_BUCKET_NAME     = string
     DEPLOY_ARTIFACTS_BUCKET_KEY      = string
     CODE_DEPLOY_APPLICATION_NAME     = string
+    CODE_PIPELINE_ROLE_NAME          = string
+    CODE_DEPLOY_ROLE_NAME            = string
+    CODE_BUILD_ROLE_NAME             = string
   })
 }
 

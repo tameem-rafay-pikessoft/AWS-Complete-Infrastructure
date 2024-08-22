@@ -4,7 +4,10 @@ This repository contains the Terraform configuration for setting up infrastructu
 
 ## How to run this project
 
-DEV Command: terraform plan -var-file="dev.tfvars"
+DEV Command:
+
+- terraform plan -var-file="dev.tfvars"
+- terraform apply -var-file="dev.tfvars"
 
 ## Table of Contents
 
