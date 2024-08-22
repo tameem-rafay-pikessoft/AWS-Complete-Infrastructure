@@ -41,17 +41,17 @@ module "aws_cloudwatch_resource_monitoring_alerts" {
 }
 
 module "aws_ecr_repository_for_BE_module" {
-  source              = "./module/ecr_repository"
+  source                     = "./module/ecr_repository"
   ECR_REPOSITORY_NAME_FOR_BE = var.ECR_REPOSITORY_NAME_FOR_BE
-  tags                = local.common_tags
+  tags                       = local.common_tags
 }
 
 module "load_balancer_module" {
-  source          = "./module/load_balancer_module"
+  source                = "./module/load_balancer_module"
   DEFAULT_VPC_SUBNET_ID = var.DEFAULT_VPC_SUBNET_ID
-  DEFAULT_VPC_ID          = var.DEFAULT_VPC_ID
-  ELB_PUBLIC_NAME = var.ELB_PUBLIC_NAME
-  tags            = local.common_tags
+  DEFAULT_VPC_ID        = var.DEFAULT_VPC_ID
+  ELB_PUBLIC_NAME       = var.ELB_PUBLIC_NAME
+  tags                  = local.common_tags
 }
 
 module "ec2_security_group_for_auto_scaling_module" {
@@ -87,20 +87,20 @@ module "ec2_auto_scaling_BE_module" {
   source                = "./module/auto_scaling_group_module"
   instance_type         = var.EC2_INSTANCE_TYPE
   ami                   = var.EC2_INSTANCE_AMI
-  DEFAULT_VPC_SUBNET_ID       = var.DEFAULT_VPC_SUBNET_ID
+  DEFAULT_VPC_SUBNET_ID = var.DEFAULT_VPC_SUBNET_ID
   elb_security_group_id = module.load_balancer_module.elb_security_group_id
   ec2_security_group_id = module.ec2_security_group_for_auto_scaling_module.security_group_id
   ec2_key_pair_name     = module.aws_key_pair_module.ec2_key_pair_name
   target_group_arn      = module.load_balancer_module.target_group_arn
-  ASG_MIN_SIZE              = var.ASG_MIN_SIZE
-  ASG_MAX_SIZE              = var.ASG_MAX_SIZE
-  ASG_DESIRED_CAPACITY      = var.ASG_DESIRED_CAPACITY
-  DEFAULT_VPC_ID                = var.DEFAULT_VPC_ID
+  ASG_MIN_SIZE          = var.AUTO_SCALING_CONFIG.ASG_MIN_SIZE
+  ASG_MAX_SIZE          = var.AUTO_SCALING_CONFIG.ASG_MAX_SIZE
+  ASG_DESIRED_CAPACITY  = var.AUTO_SCALING_CONFIG.ASG_DESIRED_CAPACITY
+  DEFAULT_VPC_ID        = var.DEFAULT_VPC_ID
   tags                  = local.common_tags
 }
 
 module "code_pipeline_BE_module" {
-  source              = "./module/code_pipeline_module"
+  source                 = "./module/code_pipeline_module"
   AWS_CODE_PIPELINE_NAME = var.AWS_CODE_PIPELINE_NAME
   PipelineVariables = {
     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
@@ -110,10 +110,10 @@ module "code_pipeline_BE_module" {
     is_deploy_on_s3_bucket = false
     autoscaling_group_name = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   }
-  FULL_REPOSITORY_ID                          = var.FULL_REPOSITORY_ID
-  BRANCH_NAME                                = var.BRANCH_NAME
-  CODE_STAR_CONNECTION_ARN                     = var.CODE_STAR_CONNECTION_ARN
-  S3_BUCKET_FOR_PIPELINE_ARTIFACTS                  = var.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
+  FULL_REPOSITORY_ID                        = var.FULL_REPOSITORY_ID
+  BRANCH_NAME                               = var.BRANCH_NAME
+  CODE_STAR_CONNECTION_ARN                  = var.CODE_STAR_CONNECTION_ARN
+  S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
   tags                                      = local.common_tags
 }
