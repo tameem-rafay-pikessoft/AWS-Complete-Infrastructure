@@ -65,10 +65,10 @@ resource "aws_iam_role" "codepipeline_role" {
   })
 }
 
-# Define IAM policy allowing necessary actions on the S3 bucket
-resource "aws_iam_policy" "codepipeline_s3_policy" {
-  name        = "codepipeline-s3-policy"
-  description = "IAM policy for CodePipeline to upload artifacts to S3 bucket"
+# Define IAM policy allowing necessary actions on the S3 bucket, CodeDeploy resources, and CodeBuild
+resource "aws_iam_policy" "codepipeline_policy" {
+  name        = "codepipeline-policy"
+  description = "IAM policy for CodePipeline to upload artifacts to S3 bucket, deploy applications using CodeDeploy, and start CodeBuild"
 
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -77,60 +77,26 @@ resource "aws_iam_policy" "codepipeline_s3_policy" {
         "Effect" : "Allow",
         "Action" : "s3:*",
         "Resource" : "*" // Replace '*' with the ARN of your S3 bucket if you want to restrict access to a specific bucket
-      }
-    ]
-  })
-}
-
-# Define IAM policy allowing necessary actions on CodeDeploy resources
-resource "aws_iam_policy" "codedeploy_policy" {
-  name        = "codedeploy-policy"
-  description = "IAM policy for CodePipeline to deploy applications using CodeDeploy"
-
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
+      },
       {
-        Effect   = "Allow",
-        Action   = "codedeploy:*",
-        Resource = "*" // Allow CreateDeployment action on all CodeDeploy resources
+        "Effect" : "Allow",
+        "Action" : "codedeploy:*",
+        "Resource" : "*" // Allow CreateDeployment action on all CodeDeploy resources
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "codebuild:StartBuild",
+          "codebuild:BatchGetBuilds",
+          "codebuild:BatchGetProjects"
+        ],
+        "Resource": "*"
       }
     ]
   })
 }
 
-resource "aws_iam_policy" "codepipeline_policy" {
-  name        = "codepipeline_policy"
-  description = "Policy for allowing CodePipeline to start CodeBuild"
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "codebuild:StartBuild",
-        "codebuild:BatchGetBuilds",
-        "codebuild:BatchGetProjects"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-# ------------------------------------------------------------
 # Attach IAM policy to IAM role associated with CodePipeline
-# ------------------------------------------------------------
-resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
-  role       = aws_iam_role.codepipeline_role.name
-  policy_arn = aws_iam_policy.codedeploy_policy.arn
-}
-resource "aws_iam_role_policy_attachment" "codepipeline_s3_policy_attachment" {
-  role       = aws_iam_role.codepipeline_role.name
-  policy_arn = aws_iam_policy.codepipeline_s3_policy.arn
-}
 resource "aws_iam_role_policy_attachment" "codepipeline_policy_attachment" {
   role       = aws_iam_role.codepipeline_role.name
   policy_arn = aws_iam_policy.codepipeline_policy.arn
