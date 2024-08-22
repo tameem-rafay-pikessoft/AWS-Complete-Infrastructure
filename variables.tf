@@ -82,7 +82,7 @@ variable "DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES" {
   }
 }
 
-variable "PIPELINE_CONFIG" {
+variable "BE_PIPELINE_CONFIG" {
   description = "Configuration for AWS CodePipeline"
   type = object({
     FULL_REPOSITORY_ID               = string
@@ -90,6 +90,18 @@ variable "PIPELINE_CONFIG" {
     BRANCH_NAME                      = string
     S3_BUCKET_FOR_PIPELINE_ARTIFACTS = string
     CODE_STAR_CONNECTION_ARN         = string
+  })
+}
+variable "ADMIN_PANEL_PIPELINE_CONFIG" {
+  description = "Configuration for AWS CodePipeline for FE deployment"
+  type = object({
+    FULL_REPOSITORY_ID               = string
+    AWS_CODE_PIPELINE_NAME           = string
+    BRANCH_NAME                      = string
+    S3_BUCKET_FOR_PIPELINE_ARTIFACTS = string
+    CODE_STAR_CONNECTION_ARN         = string
+    DEPLOY_ARTIFACTS_BUCKET_NAME     = string
+    DEPLOY_ARTIFACTS_BUCKET_KEY      = string
   })
 }
 

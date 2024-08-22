@@ -104,7 +104,7 @@ module "ec2_auto_scaling_BE_module" {
 
 module "code_pipeline_BE_module" {
   source                 = "./module/code_pipeline_module"
-  AWS_CODE_PIPELINE_NAME = var.PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
+  AWS_CODE_PIPELINE_NAME = var.BE_PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
   PipelineVariables = {
     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
   }
@@ -113,10 +113,10 @@ module "code_pipeline_BE_module" {
     is_deploy_on_s3_bucket = false
     autoscaling_group_name = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   }
-  FULL_REPOSITORY_ID                        = var.PIPELINE_CONFIG.FULL_REPOSITORY_ID
-  BRANCH_NAME                               = var.PIPELINE_CONFIG.BRANCH_NAME
-  CODE_STAR_CONNECTION_ARN                  = var.PIPELINE_CONFIG.CODE_STAR_CONNECTION_ARN
-  S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.PIPELINE_CONFIG.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
+  FULL_REPOSITORY_ID                        = var.BE_PIPELINE_CONFIG.FULL_REPOSITORY_ID
+  BRANCH_NAME                               = var.BE_PIPELINE_CONFIG.BRANCH_NAME
+  CODE_STAR_CONNECTION_ARN                  = var.BE_PIPELINE_CONFIG.CODE_STAR_CONNECTION_ARN
+  S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.BE_PIPELINE_CONFIG.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
   tags                                      = local.common_tags
 }
@@ -126,29 +126,34 @@ module "code_pipeline_BE_module" {
 # ----------------------------------------------------------------
 
 
-# module "s3_cloudfront_for_admin_panel" {
-#   source      = "./module/s3_cloudfront_module"
-#   bucket_name = "test-demo-admin-panel"
-#   origin_id   = "myS3Origin"
-#   price_class = "PriceClass_200"
-#   tags        = local.common_tags
-# }
+module "s3_cloudfront_for_admin_panel" {
+  source      = "./module/s3_cloudfront_module"
+  bucket_name = "test-demo-admin-panel"
+  origin_id   = "myS3Origin"
+  price_class = "PriceClass_200"
+  tags        = local.common_tags
+}
 
-# module "code_pipeline_FE_Admin_panel_module" {
-#   source              = "./module/code_pipeline_module"
-#   AWS_CODE_PIPELINE_NAME = var.AWS_CODE_PIPELINE_NAME
-#   PipelineVariables = {
-#     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
-#   }
-#   sns_topic_arn                             = module.sns_topic_module.sns_topic_arn
-#   autoscaling_group_name                    = module.ec2_auto_scaling_BE_module.autoscaling_group_name
-#   FULL_REPOSITORY_ID                          = var.FULL_REPOSITORY_ID
-#   BRANCH_NAME                                = var.BRANCH_NAME
-#   CODE_STAR_CONNECTION_ARN                     = var.CODE_STAR_CONNECTION_ARN
-#   S3_BUCKET_FOR_PIPELINE_ARTIFACTS                  = var.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
-#   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
-#   tags                                      = local.common_tags
-# }
+module "code_pipeline_FE_Admin_panel_module" {
+  source                 = "./module/code_pipeline_module"
+  AWS_CODE_PIPELINE_NAME = var.ADMIN_PANEL_PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
+  PipelineVariables = {
+    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+  }
+  deployment_config = {
+    is_deploy_on_s3_bucket       = true
+    deploy_artifacts_bucket_name = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_NAME
+    deploy_artifacts_bucket_key  = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_KEY
+
+  }
+  sns_topic_arn                             = module.sns_topic_module.sns_topic_arn
+  FULL_REPOSITORY_ID                        = var.ADMIN_PANEL_PIPELINE_CONFIG.FULL_REPOSITORY_ID
+  BRANCH_NAME                               = var.ADMIN_PANEL_PIPELINE_CONFIG.BRANCH_NAME
+  CODE_STAR_CONNECTION_ARN                  = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_STAR_CONNECTION_ARN
+  S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.ADMIN_PANEL_PIPELINE_CONFIG.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
+  codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
+  tags                                      = local.common_tags
+}
 
 
 

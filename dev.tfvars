@@ -22,13 +22,24 @@ CLOUDWATCH_LOG_GROUP_NAME               = "/Test-Project-development/log-group"
 CLOUDWATCH_LOG_STREAM_NAME              = "Test-Project-development-log-stream"
 DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES = ["tameem.rafay@pikessoft.com"]
 
-PIPELINE_CONFIG = {
+BE_PIPELINE_CONFIG = {
   FULL_REPOSITORY_ID               = "rafay-tariq/equipx-test-demo"
   AWS_CODE_PIPELINE_NAME           = "equipX-development-BE"
   BRANCH_NAME                      = "master"
   S3_BUCKET_FOR_PIPELINE_ARTIFACTS = "development-test-project-codepipeline-artifacts"
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
 }
+
+ADMIN_PANEL_PIPELINE_CONFIG = {
+  FULL_REPOSITORY_ID               = "rafay-tariq/equipx-test-demo"
+  AWS_CODE_PIPELINE_NAME           = "equipX-development-BE"
+  BRANCH_NAME                      = "master"
+  S3_BUCKET_FOR_PIPELINE_ARTIFACTS = "development-test-project-codepipeline-artifacts"
+  CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
+  DEPLOY_ARTIFACTS_BUCKET_NAME     = "admin-panel"
+  DEPLOY_ARTIFACTS_BUCKET_KEY      = "artifacts"
+}
+
 DEFAULT_VPC_ID                              = "vpc-0127e7d874b1d47bf"
 DEFAULT_VPC_SUBNET_ID                       = ["subnet-0f614544fcda5ec34", "subnet-04235934cfc235e61", "subnet-077dc40cd370c3e96", "subnet-061c8c24db41e7991", "subnet-092ae14de48a34df2", "subnet-0a0bc7adaf72b6390"]
 ELB_PUBLIC_NAME                             = "my-test-elb"
