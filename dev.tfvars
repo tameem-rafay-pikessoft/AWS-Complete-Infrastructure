@@ -30,13 +30,19 @@ BE_PIPELINE_CONFIG = {
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
 }
 
+CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG = {
+  S3_BUCKET_NAME = "test-demo-admin-panel"
+  ORIGIN_ID      = "myS3Origin"
+  PRICE_CLASS    = "PriceClass_200"
+}
+
 ADMIN_PANEL_PIPELINE_CONFIG = {
-  FULL_REPOSITORY_ID               = "rafay-tariq/equipx-test-demo"
-  AWS_CODE_PIPELINE_NAME           = "equipX-development-BE"
+  FULL_REPOSITORY_ID               = "rafay-tariq/Next-admin-panel"
+  AWS_CODE_PIPELINE_NAME           = "development-Admin-panel"
   BRANCH_NAME                      = "master"
   S3_BUCKET_FOR_PIPELINE_ARTIFACTS = "development-test-project-codepipeline-artifacts"
-  CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
-  DEPLOY_ARTIFACTS_BUCKET_NAME     = "admin-panel"
+  CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/d54fbc76-2224-4c40-9fbc-b0466b464dd2"
+  DEPLOY_ARTIFACTS_BUCKET_NAME     = "admin-panel-fe-test"
   DEPLOY_ARTIFACTS_BUCKET_KEY      = "artifacts"
 }
 

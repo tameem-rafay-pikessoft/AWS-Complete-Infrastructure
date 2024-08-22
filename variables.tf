@@ -92,6 +92,14 @@ variable "BE_PIPELINE_CONFIG" {
     CODE_STAR_CONNECTION_ARN         = string
   })
 }
+variable "CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG" {
+  description = "Configuration for Cloudfront with S3 deployment"
+  type = object({
+    S3_BUCKET_NAME = string
+    ORIGIN_ID      = string
+    PRICE_CLASS    = string
+  })
+}
 variable "ADMIN_PANEL_PIPELINE_CONFIG" {
   description = "Configuration for AWS CodePipeline for FE deployment"
   type = object({

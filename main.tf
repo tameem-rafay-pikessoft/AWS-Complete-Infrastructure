@@ -128,9 +128,9 @@ module "code_pipeline_BE_module" {
 
 module "s3_cloudfront_for_admin_panel" {
   source      = "./module/s3_cloudfront_module"
-  bucket_name = "test-demo-admin-panel"
-  origin_id   = "myS3Origin"
-  price_class = "PriceClass_200"
+  bucket_name = var.CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG.S3_BUCKET_NAME
+  origin_id   = var.CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG.ORIGIN_ID
+  price_class = var.CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG.PRICE_CLASS
   tags        = local.common_tags
 }
 
