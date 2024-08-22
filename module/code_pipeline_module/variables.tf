@@ -49,6 +49,11 @@ variable "code_deploy_role_name" {
   description = "role name for code deploy "
 }
 
+variable "code_build_role_name" {
+  type        = string
+  description = "role name for code build "
+}
+
 variable "deployment_config" {
   description = "Configuration for deployment"
   type = object({

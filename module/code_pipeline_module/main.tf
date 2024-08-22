@@ -231,7 +231,7 @@ resource "aws_codestarnotifications_notification_rule" "codepipeline_notificatio
 # ------------------------------------------------------------
 
 resource "aws_iam_role" "codebuild_role" {
-  name = "codebuild_role"
+  name = var.code_build_role_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

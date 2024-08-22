@@ -29,7 +29,8 @@ BE_PIPELINE_CONFIG = {
   S3_BUCKET_FOR_PIPELINE_ARTIFACTS = "development-test-project-codepipeline-artifacts"
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
   CODE_DEPLOY_APPLICATION_NAME     = "BE_APPLICATION"
-  CODE_DEPLOY_SERVICE_ROLE_NAME    = "code_deploy_be_service_role"
+  CODE_DEPLOY_ROLE_NAME            = "code-deploy-be-role"
+  CODE_BUILD_ROLE_NAME             = "code-build-be-role"
 }
 
 ADMIN_PANEL_PIPELINE_CONFIG = {
@@ -40,8 +41,9 @@ ADMIN_PANEL_PIPELINE_CONFIG = {
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/d54fbc76-2224-4c40-9fbc-b0466b464dd2"
   DEPLOY_ARTIFACTS_BUCKET_NAME     = "admin-panel-fe-test"
   DEPLOY_ARTIFACTS_BUCKET_KEY      = "artifacts"
-  CODE_DEPLOY_APPLICATION_NAME     = "ADMIN_PANEL_APPLICATION"
-  CODE_DEPLOY_SERVICE_ROLE_NAME    = "code_deploy_admin_panel_service_role"
+  CODE_DEPLOY_APPLICATION_NAME     = "ADMIN-PANEL-APPLICATION"
+  CODE_DEPLOY_ROLE_NAME            = "code-deploy-admin-panel-role"
+  CODE_BUILD_ROLE_NAME             = "code-build-admin-panel-role"
 }
 
 CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG = {
