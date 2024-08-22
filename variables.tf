@@ -28,8 +28,8 @@ variable "ENVIRNMENT_NAME" {
   description = "Environment name (e.g., Development, Staging, Production)"
 
   validation {
-    condition     = contains(["Development", "Staging", "Production"], var.ENVIRNMENT_NAME)
-    error_message = "The ENVIRNMENT_NAME must be either 'Development', 'Staging', or 'Production'."
+    condition     = contains(["Dev", "Stage", "Prod"], var.ENVIRNMENT_NAME)
+    error_message = "The ENVIRNMENT_NAME must be either Dev, Stage, Prod."
   }
 }
 

@@ -2,6 +2,10 @@
 
 This repository contains the Terraform configuration for setting up infrastructure components including EC2 instances, Parameter Store, and AWS CodePipeline. Below is an overview of each module and the steps to deploy using Terraform.
 
+## How to run this project
+
+DEV Command: terraform plan -var-file="dev.tfvars"
+
 ## Table of Contents
 
 - [EC2 Instance Module](#ec2-instance-module)
