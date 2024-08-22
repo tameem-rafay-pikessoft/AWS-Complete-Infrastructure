@@ -62,7 +62,7 @@ module "ec2_security_group_for_auto_scaling_module" {
 
 module "aws_key_pair_module" {
   source                     = "./module/aws_key_pair_module"
-  EC2_INSTANCE_PEM_FILE_NAME = var.EC2_INSTANCE_PEM_FILE_NAME
+  EC2_INSTANCE_PEM_FILE_NAME = var.EC2_CONFIG.EC2_INSTANCE_PEM_FILE_NAME
 }
 
 module "sns_topic_module" {
@@ -85,9 +85,9 @@ module "sns_topic_module" {
 
 module "ec2_auto_scaling_BE_module" {
   source                = "./module/auto_scaling_group_module"
-  instance_type         = var.EC2_INSTANCE_TYPE
-  ami                   = var.EC2_INSTANCE_AMI
-  DEFAULT_VPC_SUBNET_ID = var.DEFAULT_VPC_SUBNET_ID
+  instance_type         = var.EC2_CONFIG.EC2_INSTANCE_TYPE
+  ami                   = var.EC2_CONFIG.EC2_INSTANCE_AMI
+  DEFAULT_VPC_SUBNET_ID = var.EC2_CONFIG.DEFAULT_VPC_SUBNET_ID
   elb_security_group_id = module.load_balancer_module.elb_security_group_id
   ec2_security_group_id = module.ec2_security_group_for_auto_scaling_module.security_group_id
   ec2_key_pair_name     = module.aws_key_pair_module.ec2_key_pair_name
@@ -101,7 +101,7 @@ module "ec2_auto_scaling_BE_module" {
 
 module "code_pipeline_BE_module" {
   source                 = "./module/code_pipeline_module"
-  AWS_CODE_PIPELINE_NAME = var.AWS_CODE_PIPELINE_NAME
+  AWS_CODE_PIPELINE_NAME = var.PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
   PipelineVariables = {
     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
   }
@@ -110,10 +110,10 @@ module "code_pipeline_BE_module" {
     is_deploy_on_s3_bucket = false
     autoscaling_group_name = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   }
-  FULL_REPOSITORY_ID                        = var.FULL_REPOSITORY_ID
-  BRANCH_NAME                               = var.BRANCH_NAME
-  CODE_STAR_CONNECTION_ARN                  = var.CODE_STAR_CONNECTION_ARN
-  S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
+  FULL_REPOSITORY_ID                        = var.PIPELINE_CONFIG.FULL_REPOSITORY_ID
+  BRANCH_NAME                               = var.PIPELINE_CONFIG.BRANCH_NAME
+  CODE_STAR_CONNECTION_ARN                  = var.PIPELINE_CONFIG.CODE_STAR_CONNECTION_ARN
+  S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.PIPELINE_CONFIG.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
   tags                                      = local.common_tags
 }

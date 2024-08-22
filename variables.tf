@@ -47,24 +47,14 @@ variable "AUTO_SCALING_CONFIG" {
   }
 }
 
-variable "EC2_INSTANCE_NAME" {
-  type        = string
-  description = "Name of the AWS EC2 instance"
-}
-
-variable "EC2_INSTANCE_TYPE" {
-  type        = string
-  description = "EC2 instance type"
-}
-
-variable "EC2_INSTANCE_AMI" {
-  type        = string
-  description = "AMI ID for the EC2 instance"
-}
-
-variable "EC2_INSTANCE_PEM_FILE_NAME" {
-  type        = string
-  description = "Name of the .pem file for EC2 instance"
+variable "ec2_config" {
+  description = "Configuration for EC2 instance"
+  type = object({
+    EC2_INSTANCE_NAME         = string
+    EC2_INSTANCE_TYPE         = string
+    EC2_INSTANCE_AMI          = string
+    EC2_INSTANCE_PEM_FILE_NAME = string
+  })
 }
 
 variable "PARAMETER_STORE_NAME" {
@@ -92,33 +82,15 @@ variable "DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES" {
   }
 }
 
-variable "FULL_REPOSITORY_ID" {
-  type        = string
-  description = "Repository ID used in CodePipeline"
-}
-
-variable "AWS_CODE_PIPELINE_NAME" {
-  type        = string
-  description = "Name of the AWS CodePipeline"
-}
-
-variable "BRANCH_NAME" {
-  type        = string
-  description = "Branch name from the repository"
-}
-
-variable "S3_BUCKET_FOR_PIPELINE_ARTIFACTS" {
-  type        = string
-  description = "S3 bucket to store the source code artifacts"
-  validation {
-    condition     = can(regex("^[a-z0-9.-]+$", var.S3_BUCKET_FOR_PIPELINE_ARTIFACTS))
-    error_message = "Bucket name can only contain lowercase letters, numbers, hyphens, and periods."
-  }
-}
-
-variable "CODE_STAR_CONNECTION_ARN" {
-  type        = string
-  description = "ARN of the existing connection in CodeStar"
+variable "PIPELINE_CONFIG" {
+  description = "Configuration for AWS CodePipeline"
+  type = object({
+    FULL_REPOSITORY_ID               = string
+    AWS_CODE_PIPELINE_NAME           = string
+    BRANCH_NAME                      = string
+    S3_BUCKET_FOR_PIPELINE_ARTIFACTS = string
+    CODE_STAR_CONNECTION_ARN         = string
+  })
 }
 
 variable "DEFAULT_VPC_ID" {
