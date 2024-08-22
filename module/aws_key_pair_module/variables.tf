@@ -1,5 +1,5 @@
 
-variable "ec2_instance_pem_file_name" {
+variable "EC2_INSTANCE_PEM_FILE_NAME" {
   description = ".pem file name is required"
   type        = string
 }

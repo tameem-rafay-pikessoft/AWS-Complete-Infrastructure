@@ -1,4 +1,4 @@
-output "ecr_repository_name" {
+output "ECR_REPOSITORY_NAME_FOR_BE" {
   description = "The name of the ECR repository"
   value       = aws_ecr_repository.my_ecr_repo.name
 }

@@ -2,17 +2,17 @@ variable "ami" {
   description = "AMI ID for the EC2 instance"
 }
 
-variable "min_size" {
+variable "ASG_MIN_SIZE" {
   description = "Minimum size of the Auto Scaling group"
   type        = number
 }
 
-variable "max_size" {
+variable "ASG_MAX_SIZE" {
   description = "Maximum size of the Auto Scaling group"
   type        = number
 }
 
-variable "desired_capacity" {
+variable "ASG_DESIRED_CAPACITY" {
   description = "Desired number of instances in the Auto Scaling group"
   type        = number
 }
@@ -39,12 +39,12 @@ variable "ec2_security_group_id" {
   type        = string
 }
 
-variable "VPC_Subnets_ids" {
+variable "DEFAULT_VPC_SUBNET_ID" {
   type        = list(string)
   description = "Subnets of VPC"
 }
 
-variable "VPC_ID" {
+variable "DEFAULT_VPC_ID" {
   type        = string
   description = "VPC ID used for loadbalancer ..."
 }

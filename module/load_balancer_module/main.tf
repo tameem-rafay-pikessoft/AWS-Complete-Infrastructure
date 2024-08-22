@@ -21,7 +21,7 @@ resource "aws_security_group" "elb_sg" {
 }
 
 resource "aws_lb" "elastic_load_balancer" {
-  name               = var.elb_public_name
+  name               = var.ELB_PUBLIC_NAME
   internal           = false         # Set to true for internal ELB
   load_balancer_type = "application" # Specify the load balancer type (e.g., application, network)
 
@@ -29,7 +29,7 @@ resource "aws_lb" "elastic_load_balancer" {
     aws_security_group.elb_sg.id # Reference the ID of the ELB security group
   ]
 
-  subnets                    = var.VPC_Subnets_ids
+  subnets                    = var.DEFAULT_VPC_SUBNET_ID
   enable_deletion_protection = false # Set to true to prevent accidental deletion
   tags                       = var.tags
 }
@@ -38,7 +38,7 @@ resource "aws_lb_target_group" "lb_target_group" {
   name     = "elb-target-group"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = var.VPC_ID
+  vpc_id   = var.DEFAULT_VPC_ID
   tags     = var.tags
   health_check {
     enabled             = true           # Enable health checks

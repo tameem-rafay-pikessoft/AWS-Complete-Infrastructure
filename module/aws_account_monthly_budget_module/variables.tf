@@ -1,9 +1,9 @@
-variable "monthly_budget_notification_email_addresses" {
+variable "MONTHLY_BUDGET_NOTIFICATION_EMAIL_ADDRESSES" {
   description = "List of email addresses for budget notifications"
   type        = list(string)
 }
 
-variable "max_account_monthly_budget" {
+variable "MAX_ACCOUNT_MONTHLY_BUDGET" {
   description = "Maximum monthly budget for the account"
   type        = number
 }

@@ -1,8 +1,8 @@
-variable "cloudwatch_log_group_name" {
+variable "CLOUDWATCH_LOG_GROUP_NAME" {
   type = string
 }
 
-variable "cloudwatch_log_stream_name" {
+variable "CLOUDWATCH_LOG_STREAM_NAME" {
   type = string
 }
 

@@ -37,7 +37,7 @@ variable "instance_type" {
   description = "Instance type for the EC2 instance"
 }
 
-# variable "ec2_instance_pem_file_name" {
+# variable "EC2_INSTANCE_PEM_FILE_NAME" {
 #   description = ".pem file name for EC2 instance"
 # }
 
@@ -45,11 +45,11 @@ variable "ec2_key_pair_name" {
   description = ".pem file name for EC2 instance"
 }
 
-variable "ssh_allowed_ip" {
+variable "SSH_ALLOWED_IP" {
   type        = string
   description = "IP address allowed for SSH (e.g., '1.2.3.4/32')"
   validation {
-    condition     = var.ssh_allowed_ip != "0.0.0.0/0"
+    condition     = var.SSH_ALLOWED_IP != "0.0.0.0/0"
     error_message = "SSH port must be specified and cannot be 0"
   }
 }

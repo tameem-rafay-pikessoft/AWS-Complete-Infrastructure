@@ -6,7 +6,7 @@ resource "aws_security_group" "ec2_security_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.ssh_allowed_ip]
+    cidr_blocks = [var.SSH_ALLOWED_IP]
   }
 
   dynamic "ingress" {

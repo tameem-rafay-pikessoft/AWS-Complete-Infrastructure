@@ -1,4 +1,4 @@
-variable "ecr_repository_name" {
+variable "ECR_REPOSITORY_NAME_FOR_BE" {
   type        = string
   description = "ECR Repository Name for storing the docker images"
 }

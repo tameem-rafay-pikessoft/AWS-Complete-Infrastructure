@@ -1,12 +1,12 @@
-variable "parameter_store_name" {
+variable "PARAMETER_STORE_NAME" {
   description = "parameter store name"
 }
 
-variable "aws_region" {
+variable "AWS_REGION" {
   description = "aws region where infra is deployed"
 }
 
-variable "aws_profile" {
+variable "AWS_PROFILE" {
   description = "aws profile that is setup locally"
 }
 

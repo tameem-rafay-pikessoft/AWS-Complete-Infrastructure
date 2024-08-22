@@ -4,10 +4,10 @@ resource "aws_autoscaling_group" "ec2_asg" {
     id      = aws_launch_template.launch_template.id
     version = "$Latest"
   }
-  min_size            = var.min_size
-  max_size            = var.max_size
-  desired_capacity    = var.desired_capacity
-  vpc_zone_identifier = var.VPC_Subnets_ids
+  min_size            = var.ASG_MIN_SIZE
+  max_size            = var.ASG_MAX_SIZE
+  desired_capacity    = var.ASG_DESIRED_CAPACITY
+  vpc_zone_identifier = var.DEFAULT_VPC_SUBNET_ID
   target_group_arns   = var.target_group_arn != null ? [var.target_group_arn] : []
 
 }

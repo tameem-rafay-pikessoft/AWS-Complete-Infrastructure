@@ -1,8 +1,8 @@
-variable "ssh_allowed_ip" {
+variable "SSH_ALLOWED_IP" {
   type        = string
   description = "IP address allowed for SSH (e.g., '1.2.3.4/32')"
   validation {
-    condition     = var.ssh_allowed_ip != "0.0.0.0/0"
+    condition     = var.SSH_ALLOWED_IP != "0.0.0.0/0"
     error_message = "SSH port must be specified and cannot be 0"
   }
 }

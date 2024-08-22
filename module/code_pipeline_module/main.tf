@@ -163,13 +163,13 @@ resource "aws_iam_policy_attachment" "codepipeline_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
 }
 resource "aws_s3_bucket" "store_pipeline_artifacts_bucket" {
-  bucket        = var.s3BucketNameForArtifacts
+  bucket        = var.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
   force_destroy = true # Delete the bucket even if the Bucket is not destroyed
 }
 
 # Create CodePipeline
 resource "aws_codepipeline" "code_pipeline" {
-  name          = var.AWSCodePipeLineName
+  name          = var.AWS_CODE_PIPELINE_NAME
   role_arn      = aws_iam_role.codepipeline_role.arn
   pipeline_type = "V2"
 
@@ -201,9 +201,9 @@ resource "aws_codepipeline" "code_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        BranchName           = var.BranchName
-        FullRepositoryId     = var.FullRepositoryId
-        ConnectionArn        = var.CodeStarConnectionArn
+        BRANCH_NAME           = var.BRANCH_NAME
+        FULL_REPOSITORY_ID     = var.FULL_REPOSITORY_ID
+        ConnectionArn        = var.CODE_STAR_CONNECTION_ARN
         OutputArtifactFormat = "CODE_ZIP"
       }
     }
@@ -287,7 +287,7 @@ resource "aws_iam_role_policy_attachment" "policy_attachments" {
 }
 
 resource "aws_cloudwatch_log_group" "codebuild_log_group" {
-  name = format("/codebuild/%s", var.AWSCodePipeLineName)
+  name = format("/codebuild/%s", var.AWS_CODE_PIPELINE_NAME)
 }
 
 resource "aws_codebuild_project" "code_build" {
@@ -311,8 +311,8 @@ resource "aws_codebuild_project" "code_build" {
   }
   logs_config {
     cloudwatch_logs {
-      group_name  = format("/codebuild/%s", var.AWSCodePipeLineName)
-      stream_name = format("/codebuild/%s", var.AWSCodePipeLineName)
+      group_name  = format("/codebuild/%s", var.AWS_CODE_PIPELINE_NAME)
+      stream_name = format("/codebuild/%s", var.AWS_CODE_PIPELINE_NAME)
     }
   }
 }

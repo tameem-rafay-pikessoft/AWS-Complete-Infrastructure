@@ -4,22 +4,22 @@ variable "tags" {
 }
 
 
-variable "AWSCodePipeLineName" {
+variable "AWS_CODE_PIPELINE_NAME" {
   type        = string
   description = "Name of AWS Code pipeline name"
 }
 
-variable "s3BucketNameForArtifacts" {
+variable "S3_BUCKET_FOR_PIPELINE_ARTIFACTS" {
   type        = string
   description = "S3 bucket to store the source code artifacts"
 }
 
-variable "FullRepositoryId" {
+variable "FULL_REPOSITORY_ID" {
   type        = string
   description = "Repository used in code pipeline"
 }
 
-variable "BranchName" {
+variable "BRANCH_NAME" {
   type        = string
   description = "Select branch from repository "
 }
@@ -29,7 +29,7 @@ variable "codePipeline_notification_email_addresses" {
   type        = list(string)
 }
 
-variable "CodeStarConnectionArn" {
+variable "CODE_STAR_CONNECTION_ARN" {
   type        = string
   description = "Existing connection of github/bitbucket with AWS Coestart"
 }

@@ -1,19 +1,19 @@
-variable "elb_public_name" {
+variable "ELB_PUBLIC_NAME" {
   type        = string
   description = "Public name of ELB"
   validation {
-    condition     = can(regex("^([a-zA-Z0-9-]+)$", var.elb_public_name))
+    condition     = can(regex("^([a-zA-Z0-9-]+)$", var.ELB_PUBLIC_NAME))
     error_message = "Invalid ELB public name. Only alphanumeric characters and hyphens are allowed."
   }
 }
 
 
-variable "VPC_ID" {
+variable "DEFAULT_VPC_ID" {
   type        = string
   description = "VPC ID used for loadbalancer ..."
 }
 
-variable "VPC_Subnets_ids" {
+variable "DEFAULT_VPC_SUBNET_ID" {
   type        = list(string)
   description = "Subnets of VPC"
 }

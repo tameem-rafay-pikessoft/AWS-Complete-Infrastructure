@@ -1,5 +1,5 @@
 resource "aws_ssm_parameter" "secure_parameter" {
-  name        = var.parameter_store_name
+  name        = var.PARAMETER_STORE_NAME
   description = "My secure parameter"
   type        = "SecureString"
   value       = "TEST VALUE AFTER DEPLOYMENT"
@@ -12,8 +12,8 @@ resource "null_resource" "example" {
   # DISCLAMIAR: once the resources are created you can not initialized more variables here.
   triggers = {
     parameter_name = aws_ssm_parameter.secure_parameter.name
-    aws_region     = var.aws_region  #var.aws_region
-    aws_profile    = var.aws_profile #var.aws_profile
+    AWS_REGION     = var.AWS_REGION  #var.AWS_REGION
+    AWS_PROFILE    = var.AWS_PROFILE #var.AWS_PROFILE
   }
 
   provisioner "local-exec" {
@@ -22,8 +22,8 @@ resource "null_resource" "example" {
       echo '-----' >> parameter_value.txt
       aws ssm get-parameter \
         --name ${self.triggers.parameter_name} \
-        --region ${self.triggers.aws_region} \
-        --profile ${self.triggers.aws_profile} \
+        --region ${self.triggers.AWS_REGION} \
+        --profile ${self.triggers.AWS_PROFILE} \
         --query 'Parameter.Value' \
         --with-decryption \
         --output text >> parameter_value.txt
