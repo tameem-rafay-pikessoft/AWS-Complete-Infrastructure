@@ -113,6 +113,8 @@ module "code_pipeline_BE_module" {
     is_deploy_on_s3_bucket = false
     autoscaling_group_name = module.ec2_auto_scaling_BE_module.autoscaling_group_name
   }
+    codepipeline_policy_name                = var.BE_PIPELINE_CONFIG.CODE_PIPELINE_POLICY_NAME
+  code_build_project_name                   = var.BE_PIPELINE_CONFIG.CODE_BUILD_PROJECT_NAME
   code_deploy_role_name                     = var.BE_PIPELINE_CONFIG.CODE_DEPLOY_ROLE_NAME
   code_pipeline_role_name                   = var.BE_PIPELINE_CONFIG.CODE_PIPELINE_ROLE_NAME
   code_build_role_name                      = var.BE_PIPELINE_CONFIG.CODE_BUILD_ROLE_NAME
@@ -150,6 +152,8 @@ module "code_pipeline_FE_Admin_panel_module" {
     deploy_artifacts_bucket_key  = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_KEY
 
   }
+  codepipeline_policy_name                  = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_PIPELINE_POLICY_NAME
+  code_build_project_name                   = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_BUILD_PROJECT_NAME
   code_deploy_role_name                     = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_DEPLOY_ROLE_NAME
   code_pipeline_role_name                   = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_PIPELINE_ROLE_NAME
   code_build_role_name                      = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_BUILD_ROLE_NAME

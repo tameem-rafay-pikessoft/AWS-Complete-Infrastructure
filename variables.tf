@@ -94,6 +94,8 @@ variable "BE_PIPELINE_CONFIG" {
     CODE_PIPELINE_ROLE_NAME          = string
     CODE_DEPLOY_ROLE_NAME            = string
     CODE_BUILD_ROLE_NAME             = string
+    CODE_PIPELINE_POLICY_NAME        = string
+    CODE_BUILD_PROJECT_NAME          = string
   })
 }
 variable "CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG" {
@@ -118,6 +120,8 @@ variable "ADMIN_PANEL_PIPELINE_CONFIG" {
     CODE_PIPELINE_ROLE_NAME          = string
     CODE_DEPLOY_ROLE_NAME            = string
     CODE_BUILD_ROLE_NAME             = string
+    CODE_PIPELINE_POLICY_NAME        = string
+    CODE_BUILD_PROJECT_NAME          = string
   })
 }
 

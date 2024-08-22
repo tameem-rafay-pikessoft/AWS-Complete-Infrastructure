@@ -67,7 +67,7 @@ resource "aws_iam_role" "codepipeline_role" {
 
 # Define IAM policy allowing necessary actions on the S3 bucket, CodeDeploy resources, and CodeBuild
 resource "aws_iam_policy" "codepipeline_policy" {
-  name        = "codepipeline-policy"
+  name        = var.codepipeline_policy_name
   description = "IAM policy for CodePipeline to upload artifacts to S3 bucket, deploy applications using CodeDeploy, and start CodeBuild"
 
   policy = jsonencode({
@@ -257,7 +257,7 @@ resource "aws_cloudwatch_log_group" "codebuild_log_group" {
 }
 
 resource "aws_codebuild_project" "code_build" {
-  name          = "code-build-project"
+  name          = var.code_build_project_name
   description   = "CodeBuild project"
   service_role  = aws_iam_role.codebuild_role.arn
   build_timeout = "10"

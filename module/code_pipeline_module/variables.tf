@@ -53,6 +53,16 @@ variable "code_deploy_role_name" {
   description = "role name for code deploy "
 }
 
+variable "codepipeline_policy_name" {
+  type        = string
+  description = "policy name for code pipeline "
+}
+
+variable "code_build_project_name" {
+  type        = string
+  description = "project name for code build "
+}
+
 variable "code_build_role_name" {
   type        = string
   description = "role name for code build "
