@@ -29,12 +29,7 @@ BE_PIPELINE_CONFIG = {
   S3_BUCKET_FOR_PIPELINE_ARTIFACTS = "development-test-project-codepipeline-artifacts"
   CODE_STAR_CONNECTION_ARN         = "arn:aws:codeconnections:us-east-1:905418404338:connection/4acf213c-7724-402c-a850-e5ae5da43430"
   CODE_DEPLOY_APPLICATION_NAME     = "BE_APPLICATION"
-}
-
-CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG = {
-  S3_BUCKET_NAME = "test-demo-admin-panel"
-  ORIGIN_ID      = "myS3Origin"
-  PRICE_CLASS    = "PriceClass_200"
+  CODE_DEPLOY_SERVICE_ROLE_NAME    = "code_deploy_be_service_role"
 }
 
 ADMIN_PANEL_PIPELINE_CONFIG = {
@@ -46,7 +41,15 @@ ADMIN_PANEL_PIPELINE_CONFIG = {
   DEPLOY_ARTIFACTS_BUCKET_NAME     = "admin-panel-fe-test"
   DEPLOY_ARTIFACTS_BUCKET_KEY      = "artifacts"
   CODE_DEPLOY_APPLICATION_NAME     = "ADMIN_PANEL_APPLICATION"
+  CODE_DEPLOY_SERVICE_ROLE_NAME    = "code_deploy_admin_panel_service_role"
 }
+
+CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG = {
+  S3_BUCKET_NAME = "test-demo-admin-panel"
+  ORIGIN_ID      = "myS3Origin"
+  PRICE_CLASS    = "PriceClass_200"
+}
+
 
 DEFAULT_VPC_ID                              = "vpc-0127e7d874b1d47bf"
 DEFAULT_VPC_SUBNET_ID                       = ["subnet-0f614544fcda5ec34", "subnet-04235934cfc235e61", "subnet-077dc40cd370c3e96", "subnet-061c8c24db41e7991", "subnet-092ae14de48a34df2", "subnet-0a0bc7adaf72b6390"]
