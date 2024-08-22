@@ -2,6 +2,7 @@
 # Create SNS topic
 resource "aws_sns_topic" "codepipeline_notifications" {
   name = "codepipeline-notifications"
+  tags = var.tags
 }
 
 # Subscribe email to SNS topic

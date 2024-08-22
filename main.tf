@@ -58,15 +58,18 @@ module "ec2_security_group_for_auto_scaling_module" {
   source                = "./module/security_group_module"
   elb_security_group_id = module.load_balancer_module.elb_security_group_id
   SSH_ALLOWED_IP        = var.SSH_ALLOWED_IP
+  tags                  = local.common_tags
 }
 
 module "aws_key_pair_module" {
   source                     = "./module/aws_key_pair_module"
   EC2_INSTANCE_PEM_FILE_NAME = var.EC2_CONFIG.EC2_INSTANCE_PEM_FILE_NAME
+  tags                       = local.common_tags
 }
 
 module "sns_topic_module" {
   source                       = "./module/sns_topic"
+  tags                         = local.common_tags
   notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
 }
 
@@ -87,7 +90,7 @@ module "ec2_auto_scaling_BE_module" {
   source                = "./module/auto_scaling_group_module"
   instance_type         = var.EC2_CONFIG.EC2_INSTANCE_TYPE
   ami                   = var.EC2_CONFIG.EC2_INSTANCE_AMI
-  DEFAULT_VPC_SUBNET_ID = var.EC2_CONFIG.DEFAULT_VPC_SUBNET_ID
+  DEFAULT_VPC_SUBNET_ID = var.DEFAULT_VPC_SUBNET_ID
   elb_security_group_id = module.load_balancer_module.elb_security_group_id
   ec2_security_group_id = module.ec2_security_group_for_auto_scaling_module.security_group_id
   ec2_key_pair_name     = module.aws_key_pair_module.ec2_key_pair_name

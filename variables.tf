@@ -13,8 +13,8 @@ variable "SSH_ALLOWED_IP" {
   description = "Allowed IP for SSH access"
 
   validation {
-    condition     = can(regex("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", var.SSH_ALLOWED_IP))
-    error_message = "The SSH_ALLOWED_IP must be a valid IPv4 address."
+    condition     = can(regex("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.SSH_ALLOWED_IP))
+    error_message = "The SSH_ALLOWED_IP must be a valid IPv4 address in CIDR notation."
   }
 }
 
@@ -47,12 +47,12 @@ variable "AUTO_SCALING_CONFIG" {
   }
 }
 
-variable "ec2_config" {
+variable "EC2_CONFIG" {
   description = "Configuration for EC2 instance"
   type = object({
-    EC2_INSTANCE_NAME         = string
-    EC2_INSTANCE_TYPE         = string
-    EC2_INSTANCE_AMI          = string
+    EC2_INSTANCE_NAME          = string
+    EC2_INSTANCE_TYPE          = string
+    EC2_INSTANCE_AMI           = string
     EC2_INSTANCE_PEM_FILE_NAME = string
   })
 }
