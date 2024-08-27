@@ -46,7 +46,18 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
 resource "aws_s3_bucket" "deploy_bucket" {
   count    = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
   bucket   = var.deployment_config.deploy_artifacts_bucket_name
-  # region   = var.aws_region
+  # provider =  "us-east-1" 
+  # var.aws_region
+}
+
+resource "aws_s3_bucket_public_access_block" "deploy_bucket_block" {
+  count  = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
+  bucket = aws_s3_bucket.deploy_bucket[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 # Create IAM role for AWS CodePipeline
@@ -129,9 +140,19 @@ resource "aws_iam_policy_attachment" "codepipeline_attachment" {
   roles      = [aws_iam_role.codepipeline_role.name]
   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
 }
+
 resource "aws_s3_bucket" "store_pipeline_artifacts_bucket" {
   bucket        = var.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
   force_destroy = true # Delete the bucket even if the Bucket is not destroyed
+}
+
+resource "aws_s3_bucket_public_access_block" "store_pipeline_artifacts_bucket_block" {
+  bucket = aws_s3_bucket.store_pipeline_artifacts_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 # Create CodePipeline
@@ -207,6 +228,7 @@ resource "aws_codepipeline" "code_pipeline" {
       configuration = var.deployment_config.is_deploy_on_s3_bucket ? {
         BucketName = var.deployment_config.deploy_artifacts_bucket_name
         ObjectKey  = var.deployment_config.deploy_artifacts_bucket_key
+        Extract    = "true"
         } : {
         ApplicationName     = aws_codedeploy_app.code_pipeline_app.name
         DeploymentGroupName = aws_codedeploy_deployment_group.codedeploy_group[0].deployment_group_name
@@ -218,7 +240,7 @@ resource "aws_codepipeline" "code_pipeline" {
 resource "aws_codestarnotifications_notification_rule" "codepipeline_notifications" {
   detail_type    = "FULL"
   event_type_ids = ["codepipeline-pipeline-pipeline-execution-failed", "codepipeline-pipeline-pipeline-execution-succeeded", "codepipeline-pipeline-pipeline-execution-started"]
-  name           = "codepipeline-notifications"
+  name           = var.pipeline_notification_name
   resource       = aws_codepipeline.code_pipeline.arn
   status         = "ENABLED"
 
@@ -274,7 +296,13 @@ resource "aws_codebuild_project" "code_build" {
     image                       = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
-
+    dynamic "environment_variable" {
+      for_each = var.codebuild_environment_variables
+      content {
+        name  = environment_variable.key
+        value = environment_variable.value
+      }
+    }
   }
   logs_config {
     cloudwatch_logs {

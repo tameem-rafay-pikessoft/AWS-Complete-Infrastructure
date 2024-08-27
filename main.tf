@@ -1,4 +1,5 @@
 provider "aws" {
+  alias  = "us-east-1"
   region  = var.AWS_REGION
   profile = var.AWS_PROFILE // AWS CLI profile locally
 }
@@ -123,6 +124,7 @@ module "code_pipeline_BE_module" {
   BRANCH_NAME                               = var.BE_PIPELINE_CONFIG.BRANCH_NAME
   CODE_STAR_CONNECTION_ARN                  = var.BE_PIPELINE_CONFIG.CODE_STAR_CONNECTION_ARN
   S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.BE_PIPELINE_CONFIG.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
+  pipeline_notification_name                = var.BE_PIPELINE_CONFIG.PIPELINE_NOTIFICATION_NAME
   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
   aws_region                                = var.AWS_REGION
   tags                                      = local.common_tags
@@ -142,33 +144,34 @@ module "s3_cloudfront_for_admin_panel" {
   tags        = local.common_tags
 }
 
-# module "code_pipeline_FE_Admin_panel_module" {
-#   source                 = "./module/code_pipeline_module"
-#   AWS_CODE_PIPELINE_NAME = var.ADMIN_PANEL_PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
-#   PipelineVariables = {
-#     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
-#   }
-#   deployment_config = {
-#     is_deploy_on_s3_bucket       = true
-#     deploy_artifacts_bucket_name = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_NAME
-#     deploy_artifacts_bucket_key  = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_KEY
+module "code_pipeline_FE_Admin_panel_module" {
+  source                 = "./module/code_pipeline_module"
+  AWS_CODE_PIPELINE_NAME = var.ADMIN_PANEL_PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
+  PipelineVariables = {
+    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+  }
+  deployment_config = {
+    is_deploy_on_s3_bucket       = true
+    deploy_artifacts_bucket_name = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_NAME
+    deploy_artifacts_bucket_key  = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_KEY
 
-#   }
-#   codepipeline_policy_name                  = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_PIPELINE_POLICY_NAME
-#   code_build_project_name                   = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_BUILD_PROJECT_NAME
-#   code_deploy_role_name                     = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_DEPLOY_ROLE_NAME
-#   code_pipeline_role_name                   = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_PIPELINE_ROLE_NAME
-#   code_build_role_name                      = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_BUILD_ROLE_NAME
-#   code_deploy_application_name              = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_DEPLOY_APPLICATION_NAME
-#   sns_topic_arn                             = module.sns_topic_module.sns_topic_arn
-#   FULL_REPOSITORY_ID                        = var.ADMIN_PANEL_PIPELINE_CONFIG.FULL_REPOSITORY_ID
-#   BRANCH_NAME                               = var.ADMIN_PANEL_PIPELINE_CONFIG.BRANCH_NAME
-#   CODE_STAR_CONNECTION_ARN                  = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_STAR_CONNECTION_ARN
-#   S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.ADMIN_PANEL_PIPELINE_CONFIG.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
-#   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
-#   aws_region                                = var.AWS_REGION
-#   tags                                      = local.common_tags
-# }
+  }
+  codepipeline_policy_name                  = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_PIPELINE_POLICY_NAME
+  code_build_project_name                   = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_BUILD_PROJECT_NAME
+  code_deploy_role_name                     = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_DEPLOY_ROLE_NAME
+  code_pipeline_role_name                   = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_PIPELINE_ROLE_NAME
+  code_build_role_name                      = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_BUILD_ROLE_NAME
+  code_deploy_application_name              = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_DEPLOY_APPLICATION_NAME
+  sns_topic_arn                             = module.sns_topic_module.sns_topic_arn
+  FULL_REPOSITORY_ID                        = var.ADMIN_PANEL_PIPELINE_CONFIG.FULL_REPOSITORY_ID
+  BRANCH_NAME                               = var.ADMIN_PANEL_PIPELINE_CONFIG.BRANCH_NAME
+  CODE_STAR_CONNECTION_ARN                  = var.ADMIN_PANEL_PIPELINE_CONFIG.CODE_STAR_CONNECTION_ARN
+  S3_BUCKET_FOR_PIPELINE_ARTIFACTS          = var.ADMIN_PANEL_PIPELINE_CONFIG.S3_BUCKET_FOR_PIPELINE_ARTIFACTS
+  codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
+  pipeline_notification_name                = var.ADMIN_PANEL_PIPELINE_CONFIG.PIPELINE_NOTIFICATION_NAME
+  aws_region                                = var.AWS_REGION
+  tags                                      = local.common_tags
+}
 
 
 

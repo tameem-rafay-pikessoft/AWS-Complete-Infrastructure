@@ -48,6 +48,18 @@ variable "code_pipeline_role_name" {
   type        = string
   description = "role name for code pipeline "
 }
+
+variable "pipeline_notification_name" {
+  type        = string
+  description = "pipeline notification name"
+}
+
+variable "codebuild_environment_variables" {
+  type        = map(string)
+  description = "Environment variables for CodeBuild project"
+  default     = {}
+}
+
 variable "code_deploy_role_name" {
   type        = string
   description = "role name for code deploy "

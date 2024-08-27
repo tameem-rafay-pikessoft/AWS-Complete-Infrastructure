@@ -34,6 +34,7 @@ BE_PIPELINE_CONFIG = {
   CODE_BUILD_ROLE_NAME             = "code-build-be-role"
   CODE_PIPELINE_POLICY_NAME        = "code-pipeline-be-policy"
   CODE_BUILD_PROJECT_NAME          = "code-build-be-project"
+  PIPELINE_NOTIFICATION_NAME       = "be-pipeline-notification"
 }
 
 ADMIN_PANEL_PIPELINE_CONFIG = {
@@ -50,6 +51,7 @@ ADMIN_PANEL_PIPELINE_CONFIG = {
   CODE_BUILD_ROLE_NAME             = "code-build-admin-panel-role"
   CODE_PIPELINE_POLICY_NAME        = "code-pipeline-admin-panel-policy"
   CODE_BUILD_PROJECT_NAME          = "code-build-admin-panel-project"
+  PIPELINE_NOTIFICATION_NAME       = "admin-panel-pipeline-notification"
 }
 
 CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG = {
