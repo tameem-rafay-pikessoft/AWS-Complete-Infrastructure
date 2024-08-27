@@ -15,6 +15,10 @@ variable "price_class" {
   default     = "PriceClass_200"
 }
 
+variable "aws_region" {
+  type        = string
+  description = "The AWS region to create resources in"
+}
 
 variable "tags" {
   type    = map(string)

@@ -58,6 +58,11 @@ variable "codepipeline_policy_name" {
   description = "policy name for code pipeline "
 }
 
+variable "aws_region" {
+  type        = string
+  description = "The AWS region to create resources in"
+}
+
 variable "code_build_project_name" {
   type        = string
   description = "project name for code build "

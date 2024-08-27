@@ -1,12 +1,29 @@
-# s3_cloudfront_module/main.tf
-
 resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
 }
 
 resource "aws_s3_bucket_acl" "s3_acl" {
   bucket = aws_s3_bucket.bucket.id
-  acl    = "public-read"
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_policy" "s3_bucket_policy" {
+  bucket = aws_s3_bucket.bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowCloudFrontServicePrincipalReadOnly"
+        Effect    = "Allow"
+        Principal = {
+          AWS = aws_cloudfront_origin_access_identity.oai.iam_arn
+        }
+        Action    = ["s3:GetObject"]
+        Resource  = ["${aws_s3_bucket.bucket.arn}/*"]
+      }
+    ]
+  })
 }
 
 resource "aws_s3_bucket_website_configuration" "website_config" {
@@ -20,7 +37,6 @@ resource "aws_s3_bucket_website_configuration" "website_config" {
     key = "error.html"
   }
 }
-
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
@@ -56,7 +72,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     max_ttl                = 86400
   }
 
-  # https://aws.amazon.com/cloudfront/pricing/
   price_class = var.price_class
 
   restrictions {
@@ -68,12 +83,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+
   tags = var.tags
 }
-
-# An Origin Access Identity is a special CloudFront user that you can associate with your distribution to allow 
-# CloudFront to access your files in your S3 bucket, while restricting access to S3 directly (i.e., requests that don’t come through CloudFront).
-# This is a security feature that prevents someone from bypassing CloudFront and accessing the S3 files directly.
 
 resource "aws_cloudfront_origin_access_identity" "oai" {
   comment = "OAI for ${var.bucket_name} bucket"

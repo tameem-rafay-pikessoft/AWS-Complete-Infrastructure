@@ -44,13 +44,14 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
 }
 
 resource "aws_s3_bucket" "deploy_bucket" {
-  count  = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
-  bucket = var.deployment_config.deploy_artifacts_bucket_name
+  count    = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
+  bucket   = var.deployment_config.deploy_artifacts_bucket_name
+  # region   = var.aws_region
 }
 
 # Create IAM role for AWS CodePipeline
 resource "aws_iam_role" "codepipeline_role" {
-  name = "codepipeline-role"
+  name = var.code_pipeline_role_name
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

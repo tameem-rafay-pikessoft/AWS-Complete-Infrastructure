@@ -104,6 +104,24 @@ rm -f /etc/nginx/conf.d/default.conf
 service nginx start
 chkconfig nginx on
 
+# Install the certificate 
+# sudo yum install -y certbot
+# sudo yum install -y certbot-nginx
+# # sudo certbot renew
+
+# # renew it 
+# sudo yum install cronie -y
+# sudo systemctl start crond
+# sudo systemctl enable crond
+
+# sudo crontab -e --> UPDATE TODO: this will create the file and write it like this
+# 34 7 * * * sudo certbot renew --quiet --renew-hook "sudo systemctl reload nginx" >> /var/log/cron-certbot.log 2>&1
+
+# 3 AM EVERY DAY
+# 0 3 * * * sudo certbot renew --quiet --renew-hook "sudo systemctl reload nginx" >> /var/log/cron-certbot.log 2>&1
+
+
+
 
 
 # ----------------- REMOVE IT -----------------------------------------
