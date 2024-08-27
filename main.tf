@@ -1,5 +1,4 @@
 provider "aws" {
-  alias  = "us-east-1"
   region  = var.AWS_REGION
   profile = var.AWS_PROFILE // AWS CLI profile locally
 }
