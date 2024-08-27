@@ -168,8 +168,8 @@ resource "aws_codepipeline" "code_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        BRANCH_NAME          = var.BRANCH_NAME
-        FULL_REPOSITORY_ID   = var.FULL_REPOSITORY_ID
+        BranchName           = var.BRANCH_NAME
+        FullRepositoryId     = var.FULL_REPOSITORY_ID
         ConnectionArn        = var.CODE_STAR_CONNECTION_ARN
         OutputArtifactFormat = "CODE_ZIP"
       }
