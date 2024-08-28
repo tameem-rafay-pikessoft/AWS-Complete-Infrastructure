@@ -43,8 +43,9 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
 }
 
 resource "aws_s3_bucket" "deploy_bucket" {
-  count  = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
-  bucket = var.deployment_config.deploy_artifacts_bucket_name
+  count         = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
+  bucket        = var.deployment_config.deploy_artifacts_bucket_name
+  force_destroy = true
   # provider =  "us-east-1" 
   # var.aws_region
 }
