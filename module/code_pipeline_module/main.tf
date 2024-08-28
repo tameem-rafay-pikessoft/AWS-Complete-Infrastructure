@@ -299,6 +299,7 @@ resource "aws_codebuild_project" "code_build" {
       content {
         name  = environment_variable.key
         value = environment_variable.value
+        type  = "PLAINTEXT"
       }
     }
   }

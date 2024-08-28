@@ -105,9 +105,6 @@ module "ec2_auto_scaling_BE_module" {
 module "code_pipeline_BE_module" {
   source                 = "./module/code_pipeline_module"
   AWS_CODE_PIPELINE_NAME = var.BE_PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
-  PipelineVariables = {
-    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
-  }
   sns_topic_arn = module.sns_topic_module.sns_topic_arn
   deployment_config = {
     is_deploy_on_s3_bucket = false
@@ -127,6 +124,9 @@ module "code_pipeline_BE_module" {
   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
   aws_region                                = var.AWS_REGION
   tags                                      = local.common_tags
+  codebuild_environment_variables           = {
+    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+  }
 }
 
 # ----------------------------------------------------------------
@@ -146,9 +146,6 @@ module "s3_cloudfront_for_admin_panel" {
 module "code_pipeline_FE_Admin_panel_module" {
   source                 = "./module/code_pipeline_module"
   AWS_CODE_PIPELINE_NAME = var.ADMIN_PANEL_PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
-  PipelineVariables = {
-    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
-  }
   deployment_config = {
     is_deploy_on_s3_bucket       = true
     deploy_artifacts_bucket_name = var.ADMIN_PANEL_PIPELINE_CONFIG.DEPLOY_ARTIFACTS_BUCKET_NAME
@@ -170,6 +167,10 @@ module "code_pipeline_FE_Admin_panel_module" {
   pipeline_notification_name                = var.ADMIN_PANEL_PIPELINE_CONFIG.PIPELINE_NOTIFICATION_NAME
   aws_region                                = var.AWS_REGION
   tags                                      = local.common_tags
+  codebuild_environment_variables           = {
+    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+  }
+  
 }
 
 
