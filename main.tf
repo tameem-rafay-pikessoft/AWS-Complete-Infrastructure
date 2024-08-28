@@ -168,7 +168,7 @@ module "code_pipeline_FE_Admin_panel_module" {
   aws_region                                = var.AWS_REGION
   tags                                      = local.common_tags
   codebuild_environment_variables           = {
-    "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
+    "S3_BUCKET_NAME" = var.CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG.S3_BUCKET_NAME
   }
   
 }
