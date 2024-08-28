@@ -28,7 +28,7 @@ resource "aws_iam_role" "codedeploy_role" {
 
 # Attach IAM policy granting necessary permissions for AWS CodeDeploy to the IAM role
 resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
-  role      = aws_iam_role.codedeploy_role.name
+  role       = aws_iam_role.codedeploy_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole" # This is the AWS managed policy for CodeDeploy
 }
 
@@ -43,8 +43,8 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
 }
 
 resource "aws_s3_bucket" "deploy_bucket" {
-  count    = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
-  bucket   = var.deployment_config.deploy_artifacts_bucket_name
+  count  = var.deployment_config.is_deploy_on_s3_bucket ? 1 : 0
+  bucket = var.deployment_config.deploy_artifacts_bucket_name
   # provider =  "us-east-1" 
   # var.aws_region
 }
@@ -135,7 +135,7 @@ resource "aws_iam_role_policy" "codepipeline_assume_role_policy" {
 
 # Attach AWS managed policy for CodePipeline to the IAM role
 resource "aws_iam_role_policy_attachment" "codepipeline_attachment" {
-  role      = aws_iam_role.codepipeline_role.name
+  role       = aws_iam_role.codepipeline_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
 }
 

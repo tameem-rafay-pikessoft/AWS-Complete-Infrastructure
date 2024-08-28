@@ -1,6 +1,6 @@
 AWS_REGION      = "us-east-1"
 AWS_PROFILE     = "test-aws-terraform-Infrastructure"
-SSH_ALLOWED_IP  = "39.44.28.92/32"
+SSH_ALLOWED_IP  = "103.48.1.30/32"
 PROJECT_NAME    = "test-aws-terraform-Infrastructure"
 ENVIRNMENT_NAME = "Dev"
 

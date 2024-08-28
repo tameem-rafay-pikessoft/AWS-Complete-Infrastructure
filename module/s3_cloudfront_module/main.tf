@@ -55,6 +55,23 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
     }
   }
+  # These custom_error_response blocks configure CloudFront to serve the index.html
+  #  file instead of showing 403 (Forbidden) or 404 (Not Found) errors.
+  #  This allows single-page applications to handle routing client-side, 
+  # ensuring that direct access to any route will load the application correctly.
+  custom_error_response {
+    error_caching_min_ttl = 300
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+  }
+
+  custom_error_response {
+    error_caching_min_ttl = 300
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+  }
 
   enabled             = true
   is_ipv6_enabled     = true
@@ -68,10 +85,11 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     viewer_protocol_policy = "redirect-to-https"
 
     forwarded_values {
-      query_string = false
+      query_string = true
+      headers      = ["Origin"]
 
       cookies {
-        forward = "none"
+        forward = "all"
       }
     }
 

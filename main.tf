@@ -105,7 +105,7 @@ module "ec2_auto_scaling_BE_module" {
 module "code_pipeline_BE_module" {
   source                 = "./module/code_pipeline_module"
   AWS_CODE_PIPELINE_NAME = var.BE_PIPELINE_CONFIG.AWS_CODE_PIPELINE_NAME
-  sns_topic_arn = module.sns_topic_module.sns_topic_arn
+  sns_topic_arn          = module.sns_topic_module.sns_topic_arn
   deployment_config = {
     is_deploy_on_s3_bucket = false
     autoscaling_group_name = module.ec2_auto_scaling_BE_module.autoscaling_group_name
@@ -124,7 +124,7 @@ module "code_pipeline_BE_module" {
   codePipeline_notification_email_addresses = var.DEVELOPERS_NOTIFICATION_EMAIL_ADDRESSES
   aws_region                                = var.AWS_REGION
   tags                                      = local.common_tags
-  codebuild_environment_variables           = {
+  codebuild_environment_variables = {
     "ECR_REPOSITORY_URI" = module.aws_ecr_repository_for_BE_module.ecr_repository_url
   }
 }
@@ -167,10 +167,10 @@ module "code_pipeline_FE_Admin_panel_module" {
   pipeline_notification_name                = var.ADMIN_PANEL_PIPELINE_CONFIG.PIPELINE_NOTIFICATION_NAME
   aws_region                                = var.AWS_REGION
   tags                                      = local.common_tags
-  codebuild_environment_variables           = {
+  codebuild_environment_variables = {
     "S3_BUCKET_NAME" = var.CLOUD_FRONT_WITH_S3_ADMIN_PANEL_CONFIG.S3_BUCKET_NAME
   }
-  
+
 }
 
 
